@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
 
         <meta-data
-            android:name="com.google.android.gms.ads.com.n8ulm.aquariumkeeper"
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9795232232122201~5946149723" />
 
         <activity android:name=".SignInActivity"></activity>
