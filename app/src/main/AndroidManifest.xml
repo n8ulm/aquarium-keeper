@@ -14,6 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.com.n8ulm.aquariumkeeper"
+            android:value="ca-app-pub-9795232232122201~5946149723" />
+
         <activity android:name=".SignInActivity"></activity>
         <activity
             android:name=".MainActivity"

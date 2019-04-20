@@ -7,8 +7,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.AdView;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -21,14 +22,21 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+		implements GoogleApiClient.OnConnectionFailedListener {
+
+	private static final String TAG = "MainActivity";
+	public static final String ANONYMOUS = "anonymous";
 
 	private TextView mTextMessage;
+	private String mUsername;
 
 	private SharedPreferences mSharedPreferences;
 	private GoogleApiClient mGoogleApiClient;
@@ -40,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 	private FirebaseRemoteConfig mFirebaseRemoteConfig;
 	private FirebaseAnalytics mFirebaseAnalytics;
 
-	private AdView mAdView;
+	//private AdView mAdView;
 
 	private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
 			= new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -69,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		// Set default username is anonymous.
-		//mUsername = ANONYMOUS;
+		mUsername = ANONYMOUS;
 
 		mTextMessage = (TextView) findViewById(R.id.message);
 		BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -116,6 +124,34 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.crash_menu:
+				Log.w("Crashlytics", "Crash button clicked");
+				causeCrash();
+			case R.id.invite_menu:
+				//sendInvitation();
+				return true;
+			case R.id.fresh_config_menu:
+				//fetchConfig();
+				return true;
+			case R.id.sign_out_menu:
+				mFirebaseAuth.signOut();
+				Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+				mUsername = ANONYMOUS;
+				startActivity(new Intent(this, SignInActivity.class));
+				finish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void causeCrash() {
+		throw new NullPointerException("Fake Null Pointer Exception");
+	}
+
+	@Override
 	public void onStart() {
 		super.onStart();
 		// Check if user is signed in.
@@ -135,5 +171,13 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+	}
+
+	@Override
+	public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+		// An unresolvable error has occurred and Google APIs (including Sign-In) will not
+		// be available.
+		Log.d(TAG, "onConnectionFailed:" + connectionResult);
+		Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
 	}
 }
