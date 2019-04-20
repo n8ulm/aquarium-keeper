@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -37,6 +40,10 @@ public class SignInActivity extends AppCompatActivity implements
 	// Firebase instance variables
 	private FirebaseAuth mFirebaseAuth;
 
+	// AdMob
+	private AdView mAdView;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,6 +67,13 @@ public class SignInActivity extends AppCompatActivity implements
 
 		// Initialize FirebaseAuth
 		mFirebaseAuth = FirebaseAuth.getInstance();
+
+		// Init AdView
+		MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
+
+		mAdView = findViewById(R.id.adView);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdView.loadAd(adRequest);
 	}
 
 	@Override
