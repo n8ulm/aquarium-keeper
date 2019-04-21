@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -58,6 +59,10 @@ dependencies {
 
     //Crashlytics
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

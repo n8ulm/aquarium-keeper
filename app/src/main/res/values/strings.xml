@@ -9,4 +9,6 @@
     <string name="invite_menu_label">Invite Users</string>
     <string name="cause_crash">Cause Crash</string>
     <string name="ad_mob_app_id">ca-app-pub-9795232232122201~5946149723</string>
+    <string name="facebook_app_id">334351590773095</string>
+    <string name="fb_login_protocol_scheme">fb334351590773095</string>
 </resources>
