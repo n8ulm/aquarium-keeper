@@ -11,4 +11,7 @@
     <string name="ad_mob_app_id">ca-app-pub-9795232232122201~5946149723</string>
     <string name="facebook_app_id">334351590773095</string>
     <string name="fb_login_protocol_scheme">fb334351590773095</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
