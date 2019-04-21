@@ -2,11 +2,11 @@ package com.n8ulm.aquariumkeeper;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,16 +25,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
-		implements GoogleApiClient.OnConnectionFailedListener {
+		implements GoogleApiClient.OnConnectionFailedListener, LogFragment.OnFragmentInteractionListener {
 
 	private static final String TAG = "MainActivity";
 	public static final String ANONYMOUS = "anonymous";
 
-	private TextView mTextMessage;
 	private String mUsername;
 
 	private SharedPreferences mSharedPreferences;
@@ -55,14 +53,14 @@ public class MainActivity extends AppCompatActivity
 		@Override
 		public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 			switch (item.getItemId()) {
-				case R.id.navigation_home:
-					mTextMessage.setText(R.string.title_home);
+				case R.id.navigation_log:
+
 					return true;
 				case R.id.navigation_dashboard:
-					mTextMessage.setText(R.string.title_dashboard);
+
 					return true;
 				case R.id.navigation_notifications:
-					mTextMessage.setText(R.string.title_notifications);
+
 					return true;
 			}
 			return false;
@@ -78,7 +76,6 @@ public class MainActivity extends AppCompatActivity
 		// Set default username is anonymous.
 		mUsername = ANONYMOUS;
 
-		mTextMessage = (TextView) findViewById(R.id.message);
 		BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 		navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -178,5 +175,10 @@ public class MainActivity extends AppCompatActivity
 		// be available.
 		Log.d(TAG, "onConnectionFailed:" + connectionResult);
 		Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onFragmentInteraction(Uri uri) {
+
 	}
 }

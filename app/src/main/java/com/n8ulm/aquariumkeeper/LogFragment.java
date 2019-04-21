@@ -10,6 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -65,8 +69,24 @@ public class LogFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
+
+		View view = inflater.inflate(R.layout.fragment_log, container, false);
+
+		GraphView graph = (GraphView) view.findViewById(R.id.graph);
+		LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
+				new DataPoint(0, 1),
+				new DataPoint(1, 5),
+				new DataPoint(2, 3)
+		});
+		graph.addSeries(series);
+
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_log, container, false);
+		return view;
+	}
+
+	@Override
+	public void postponeEnterTransition() {
+		super.postponeEnterTransition();
 	}
 
 	// TODO: Rename method, update argument and hook method into UI event
