@@ -68,12 +68,21 @@ public class SignInActivity extends AppCompatActivity implements
 		// Initialize FirebaseAuth
 		mFirebaseAuth = FirebaseAuth.getInstance();
 
+
+		//TODO Configure Ads for publishing, remove test devices
+		//adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
 		// Init AdView
 		MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
 
-		mAdView = findViewById(R.id.adView);
-		AdRequest adRequest = new AdRequest.Builder().build();
+		AdRequest adRequest = new AdRequest.Builder()
+				.addTestDevice("E19E8ABD7B419C86693F16D4DB4F306A")
+				.build();
+
+		adRequest.isTestDevice(this);
+
+		mAdView = findViewById(R.id.signInAdView);
 		mAdView.loadAd(adRequest);
+
 	}
 
 	@Override
