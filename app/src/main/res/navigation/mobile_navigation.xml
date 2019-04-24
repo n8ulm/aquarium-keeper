@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@id/logFragment">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/mobile_navigation"
+            app:startDestination="@id/logFragment">
 
     <fragment
         android:id="@+id/logFragment"
         android:name="com.n8ulm.aquariumkeeper.LogFragment"
         android:label="fragment_log"
-        tools:layout="@layout/fragment_log" />
+        tools:layout="@layout/fragment_log" >
+        <action
+            android:id="@+id/action_logFragment_to_resultInputFragment"
+            app:destination="@id/resultInputFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/resultInputFragment"
+        android:name="com.n8ulm.aquariumkeeper.ResultInputFragment"
+        android:label="ResultInputFragment" />
+
 </navigation>

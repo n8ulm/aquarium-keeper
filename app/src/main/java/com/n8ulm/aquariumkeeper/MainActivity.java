@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +20,9 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -28,7 +32,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
-		implements GoogleApiClient.OnConnectionFailedListener, LogFragment.OnFragmentInteractionListener {
+		implements
+		GoogleApiClient.OnConnectionFailedListener,
+		NavigationView.OnNavigationItemSelectedListener,
+		LogFragment.OnFragmentInteractionListener,
+		ResultInputFragment.OnFragmentInteractionListener{
 
 	private static final String TAG = "MainActivity";
 	public static final String ANONYMOUS = "anonymous";
@@ -180,5 +188,10 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public void onFragmentInteraction(Uri uri) {
 
+	}
+
+	@Override
+	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+		return false;
 	}
 }
