@@ -5,12 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogFragment">
+    tools:context=".ui.log.LogFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".LogFragment">
+        tools:context=".ui.log.LogFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/parameter_log_list"

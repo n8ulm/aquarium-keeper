@@ -1,10 +1,14 @@
-package com.n8ulm.aquariumkeeper;
+package com.n8ulm.aquariumkeeper.ui.result;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +17,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.n8ulm.aquariumkeeper.R;
 
 
 public class ResultInputFragment extends Fragment implements AdapterView.OnItemSelectedListener {
@@ -66,7 +71,7 @@ public class ResultInputFragment extends Fragment implements AdapterView.OnItemS
 							 Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.dialogue_test_input, container, false);
 
-		Spinner spinner = (Spinner) view.findViewById(R.id.test_spinner);
+		final Spinner spinner = (Spinner) view.findViewById(R.id.test_spinner);
 		if (spinner != null){
 			spinner.setOnItemSelectedListener(this);
 		}
@@ -78,6 +83,28 @@ public class ResultInputFragment extends Fragment implements AdapterView.OnItemS
 		if (spinner != null) {
 			spinner.setAdapter(adapter);
 		}
+
+		mSaveResultButton = (Button) view.findViewById(R.id.save_result_button);
+		mSaveResultButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+
+			}
+		});
+
+		ResultInputViewModel viewModel = ViewModelProviders.of(getActivity()).get(ResultInputViewModel.class);
+
+		LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
+
+		liveData.observe(getActivity(), new Observer<DataSnapshot>() {
+			@Override
+			public void onChanged(DataSnapshot dataSnapshot) {
+				if (dataSnapshot != null) {
+
+				}
+			}
+		});
 
 
 		return view;

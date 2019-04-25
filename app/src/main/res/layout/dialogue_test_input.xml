@@ -96,7 +96,7 @@
             android:text="Cancel" />
 
         <Button
-            android:id="@+id/add_result_button"
+            android:id="@+id/save_result_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -1,4 +1,4 @@
-package com.n8ulm.aquariumkeeper;
+package com.n8ulm.aquariumkeeper.ui.log;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +27,8 @@ import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.n8ulm.aquariumkeeper.R;
+import com.n8ulm.aquariumkeeper.data.Parameter;
 
 
 /**
@@ -133,6 +139,17 @@ public class LogFragment extends Fragment {
 						.setQuery(parametersRef, parser)
 						.build();
 
+		LogFragmentViewModel viewModel = ViewModelProviders.of(getActivity()).get(LogFragmentViewModel.class);
+
+		LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
+
+		liveData.observe(getActivity(), new Observer<DataSnapshot>() {
+			@Override
+			public void onChanged(DataSnapshot dataSnapshot) {
+				if (dataSnapshot != null);
+			}
+		});
+
 		mFirebaseAdapter = new FirebaseRecyclerAdapter<Parameter, ParameterViewHolder>(options) {
 			@NonNull
 			@Override
@@ -148,17 +165,10 @@ public class LogFragment extends Fragment {
 					viewHolder.paramTitle.setText(parameter.getParamTitle());
 				}
 
-				if (parameter.getParamSafeRange() != null) {
-					viewHolder.paramSafeRange.setText(parameter.getParamSafeRange());
+				if (parameter.getParamDate() != null) {
+					viewHolder.paramLastTestDate.setText(parameter.getParamDate());
 				}
 
-				if (parameter.getParamLastTestDate() != null) {
-					viewHolder.paramLastTestDate.setText(parameter.getParamLastTestDate());
-				}
-
-				if (parameter.getParamLastTestResult() != null) {
-					viewHolder.paramLastTestResult.setText(parameter.getParamLastTestResult());
-				}
 			}
 		};
 

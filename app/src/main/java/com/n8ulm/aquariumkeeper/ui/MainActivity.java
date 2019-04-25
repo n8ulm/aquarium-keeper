@@ -1,4 +1,4 @@
-package com.n8ulm.aquariumkeeper;
+package com.n8ulm.aquariumkeeper.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,11 +18,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.n8ulm.aquariumkeeper.R;
+import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
+import com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.preference.PreferenceManager;
 import android.util.Log;

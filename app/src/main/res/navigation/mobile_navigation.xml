@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/logFragment"
-        android:name="com.n8ulm.aquariumkeeper.LogFragment"
+        android:name="com.n8ulm.aquariumkeeper.ui.log.LogFragment"
         android:label="fragment_log"
         tools:layout="@layout/fragment_log" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/resultInputFragment"
-        android:name="com.n8ulm.aquariumkeeper.ResultInputFragment"
+        android:name="com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment"
         android:label="ResultInputFragment" />
 
 </navigation>

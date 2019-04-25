@@ -1,4 +1,4 @@
-package com.n8ulm.aquariumkeeper;
+package com.n8ulm.aquariumkeeper.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,6 +30,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.n8ulm.aquariumkeeper.R;
 
 import java.util.Arrays;
 
