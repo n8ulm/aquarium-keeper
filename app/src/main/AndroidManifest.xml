@@ -22,7 +22,7 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".ui.SignInActivity"></activity>
+        <activity android:name=".ui.signin.SignInActivity"></activity>
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name">

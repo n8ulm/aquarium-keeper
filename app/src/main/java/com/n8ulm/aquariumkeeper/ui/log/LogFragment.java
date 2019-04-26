@@ -48,9 +48,6 @@ public class LogFragment extends Fragment {
 	private DatabaseReference mFirebaseDatabaseReference;
 	private FirebaseRecyclerAdapter<Parameter, ParameterViewHolder> mFirebaseAdapter;
 
-	private ImageButton mAddNewTestButton;
-
-
 	// TODO: Rename parameter arguments, choose names that match
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_PARAM1 = "param1";
@@ -107,16 +104,6 @@ public class LogFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		mAddNewTestButton = (ImageButton) view.findViewById(R.id.add_new_test_button);
-		mAddNewTestButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				NavController navController =
-						Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
-				navController.navigate(R.id.action_logFragment_to_resultInputFragment);
-			}
-		});
 
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.parameter_log_list);
 

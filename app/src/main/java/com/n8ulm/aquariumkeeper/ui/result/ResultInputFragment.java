@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.n8ulm.aquariumkeeper.R;
 
 
@@ -88,7 +91,8 @@ public class ResultInputFragment extends Fragment implements AdapterView.OnItemS
 		mSaveResultButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				String parameterTitel = spinner.getSelectedItem().toString();
+				DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").push();
 
 			}
 		});

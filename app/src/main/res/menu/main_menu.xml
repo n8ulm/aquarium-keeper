@@ -2,9 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/sign_out_menu"
-        android:title="@string/sign_out"
-        app:showAsAction="never" />
+        android:id="@+id/add_result"
+        android:title="@string/add_new_result"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_add_black_24dp"/>
     <item
         android:id="@+id/fresh_config_menu"
         android:title="@string/fresh_config"
@@ -15,5 +16,14 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/crash_menu"
-        android:title="@string/cause_crash" />
+        android:title="@string/cause_crash"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/add_tank"
+        android:title="@string/add_tank"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/sign_out_menu"
+        android:title="@string/sign_out"
+        app:showAsAction="never" />
 </menu>

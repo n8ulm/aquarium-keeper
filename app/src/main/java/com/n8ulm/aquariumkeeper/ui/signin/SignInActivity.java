@@ -1,4 +1,4 @@
-package com.n8ulm.aquariumkeeper.ui;
+package com.n8ulm.aquariumkeeper.ui.signin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,7 +30,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.n8ulm.aquariumkeeper.R;
+import com.n8ulm.aquariumkeeper.data.User;
+import com.n8ulm.aquariumkeeper.ui.MainActivity;
 
 import java.util.Arrays;
 
@@ -54,6 +58,7 @@ public class SignInActivity extends AppCompatActivity implements
 
 	// Firebase instance variables
 	private FirebaseAuth mFirebaseAuth;
+	private DatabaseReference mDatabase;
 
 	// AdMob
 	private AdView mAdView;
@@ -122,6 +127,8 @@ public class SignInActivity extends AppCompatActivity implements
 		mAdView = findViewById(R.id.signInAdView);
 		mAdView.loadAd(adRequest);
 
+		mDatabase = FirebaseDatabase.getInstance().getReference();
+
 	}
 
 	private void handleFacebookAccessToken(AccessToken token) {
@@ -188,7 +195,7 @@ public class SignInActivity extends AppCompatActivity implements
 		}
 	}
 
-	private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+	private void firebaseAuthWithGoogle(final GoogleSignInAccount account) {
 		Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
 		AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 		mFirebaseAuth.signInWithCredential(credential)
@@ -219,5 +226,4 @@ public class SignInActivity extends AppCompatActivity implements
 		Log.d(TAG, "onConnectionFailed:" + connectionResult);
 		Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
 	}
-
 }
