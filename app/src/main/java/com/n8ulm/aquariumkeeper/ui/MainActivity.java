@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity
 	private void writeNewUser(String userId, String name, String email) {
 		User user = new User(name, email);
 
-		mFirebaseDatabaseReference.child("users").child(userId).setValue(user);
+		mFirebaseDatabaseReference.child("users").child(userId).child("user").setValue(user);
 		Log.d(TAG, "wrote new user to firebase database");
 	}
 

@@ -1,6 +1,7 @@
 package com.n8ulm.aquariumkeeper.ui.log;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,8 @@ import android.widget.ImageButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,6 +50,7 @@ public class LogFragment extends Fragment {
 	// Member variables.
 	private RecyclerView mRecyclerView;
 	private DatabaseReference mFirebaseDatabaseReference;
+	private FirebaseUser mFirebaseUser;
 	private FirebaseRecyclerAdapter<Parameter, ParameterViewHolder> mFirebaseAdapter;
 
 	// TODO: Rename parameter arguments, choose names that match
@@ -58,20 +63,12 @@ public class LogFragment extends Fragment {
 	private String mParam2;
 
 	private OnFragmentInteractionListener mListener;
+	private final String TAG = LogFragment.class.getSimpleName();
 
 	public LogFragment() {
 		// Required empty public constructor
 	}
 
-	/**
-	 * Use this factory method to create a new instance of
-	 * this fragment using the provided parameters.
-	 *
-	 * @param param1 Parameter 1.
-	 * @param param2 Parameter 2.
-	 * @return A new instance of fragment LogFragment.
-	 */
-	// TODO: Rename and change types and number of parameters
 	public static LogFragment newInstance(String param1, String param2) {
 		LogFragment fragment = new LogFragment();
 		Bundle args = new Bundle();
@@ -107,6 +104,8 @@ public class LogFragment extends Fragment {
 
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.parameter_log_list);
 
+		mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
 		mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 		SnapshotParser<Parameter> parser = new SnapshotParser<Parameter>() {
 			@NonNull
@@ -120,22 +119,26 @@ public class LogFragment extends Fragment {
 			}
 		};
 
-		DatabaseReference parametersRef = mFirebaseDatabaseReference.child(PARAMS_CHILD);
+		DatabaseReference parametersRef = mFirebaseDatabaseReference
+				.child("users")
+				.child(mFirebaseUser.getUid())
+				.child("parameters");
+
 		FirebaseRecyclerOptions<Parameter> options =
 				new FirebaseRecyclerOptions.Builder<Parameter>()
 						.setQuery(parametersRef, parser)
 						.build();
 
-		LogFragmentViewModel viewModel = ViewModelProviders.of(getActivity()).get(LogFragmentViewModel.class);
-
-		LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
-
-		liveData.observe(getActivity(), new Observer<DataSnapshot>() {
-			@Override
-			public void onChanged(DataSnapshot dataSnapshot) {
-				if (dataSnapshot != null);
-			}
-		});
+//		LogFragmentViewModel viewModel = ViewModelProviders.of(getActivity()).get(LogFragmentViewModel.class);
+//
+//		LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
+//
+//		liveData.observe(getActivity(), new Observer<DataSnapshot>() {
+//			@Override
+//			public void onChanged(DataSnapshot dataSnapshot) {
+//				if (dataSnapshot != null);
+//			}
+//		});
 
 		mFirebaseAdapter = new FirebaseRecyclerAdapter<Parameter, ParameterViewHolder>(options) {
 			@NonNull
@@ -149,13 +152,10 @@ public class LogFragment extends Fragment {
 			@Override
 			protected void onBindViewHolder(@NonNull ParameterViewHolder viewHolder, int i, @NonNull Parameter parameter) {
 				if (parameter.getParamTitle() != null) {
+					Log.d(TAG, "In onBindViewHolder, Parameter title is not null");
 					viewHolder.paramTitle.setText(parameter.getParamTitle());
 				}
-
-				if (parameter.getParamDate() != null) {
-					viewHolder.paramLastTestDate.setText(parameter.getParamDate());
-				}
-
+				Log.d(TAG, "In onBindViewHolder, Parameter title is null");
 			}
 		};
 
@@ -203,19 +203,30 @@ public class LogFragment extends Fragment {
 		mListener = null;
 	}
 
-	/**
-	 * This interface must be implemented by activities that contain this
-	 * fragment to allow an interaction in this fragment to be communicated
-	 * to the activity and potentially other fragments contained in that
-	 * activity.
-	 * <p>
-	 * See the Android Training lesson <a href=
-	 * "http://developer.android.com/training/basics/fragments/communicating.html"
-	 * >Communicating with Other Fragments</a> for more information.
-	 */
 	public interface OnFragmentInteractionListener {
 		// TODO: Update argument type and name
 		void onFragmentInteraction(Uri uri);
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		mFirebaseAdapter.startListening();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mFirebaseAdapter.stopListening();
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		mFirebaseAdapter.startListening();
+	}
+
+	private void fetch() {
+
+	}
 }
