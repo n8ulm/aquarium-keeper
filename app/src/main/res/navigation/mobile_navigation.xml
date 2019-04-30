@@ -19,6 +19,10 @@
     <fragment
         android:id="@+id/resultInputFragment"
         android:name="com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment"
-        android:label="ResultInputFragment" />
+        android:label="ResultInputFragment" >
+        <action
+            android:id="@+id/action_resultInputFragment_to_logFragment"
+            app:destination="@+id/logFragment"/>
+    </fragment>
 
 </navigation>

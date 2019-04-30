@@ -5,12 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,30 +17,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.n8ulm.aquariumkeeper.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class ResultInputFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
 
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
-
+	// Memeber Variable
 	private OnFragmentInteractionListener mListener;
+	private EditText mTestResult;
+	private EditText mTestDate;
 
-	// Instance Variable
-	EditText mTestResult;
-	EditText mTestDate;
+	private Button mSaveResultButton;
+	private Button mCancelResultButton;
 
-	Button mSaveResultButton;
-	Button mCancelResultButton;
+	private DatabaseReference mDatabaase;
+	private FirebaseUser mUser;
 
 	public ResultInputFragment() {
 		// Required empty public constructor
@@ -54,8 +49,6 @@ public class ResultInputFragment extends Fragment implements AdapterView.OnItemS
 	public static ResultInputFragment newInstance(String param1, String param2) {
 		ResultInputFragment fragment = new ResultInputFragment();
 		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -64,17 +57,15 @@ public class ResultInputFragment extends Fragment implements AdapterView.OnItemS
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
 		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.dialogue_test_input, container, false);
+		final View view = inflater.inflate(R.layout.fragment_result_input, container, false);
 
-		final Spinner spinner = (Spinner) view.findViewById(R.id.test_spinner);
+		final Spinner spinner = (Spinner) view.findViewById(R.id.parameter_spinner);
 		if (spinner != null){
 			spinner.setOnItemSelectedListener(this);
 		}
@@ -87,29 +78,28 @@ public class ResultInputFragment extends Fragment implements AdapterView.OnItemS
 			spinner.setAdapter(adapter);
 		}
 
+		mTestDate = view.findViewById(R.id.result_date_input);
+		mTestResult = view.findViewById(R.id.result_input);
+
+		mDatabaase = FirebaseDatabase.getInstance().getReference();
+		mUser = FirebaseAuth.getInstance().getCurrentUser();
+
 		mSaveResultButton = (Button) view.findViewById(R.id.save_result_button);
 		mSaveResultButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String parameterTitel = spinner.getSelectedItem().toString();
-				DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").push();
+				String title = spinner.getSelectedItem().toString().toLowerCase();
+
+				writeNewResult(mUser.getUid(), title, mTestDate.getText().toString(), new Double(String.valueOf(mTestResult.getText())));
+
+				NavController navController =
+						Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
+				navController.navigate(R.id.action_resultInputFragment_to_logFragment);
+
+
 
 			}
 		});
-
-		ResultInputViewModel viewModel = ViewModelProviders.of(getActivity()).get(ResultInputViewModel.class);
-
-		LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
-
-		liveData.observe(getActivity(), new Observer<DataSnapshot>() {
-			@Override
-			public void onChanged(DataSnapshot dataSnapshot) {
-				if (dataSnapshot != null) {
-
-				}
-			}
-		});
-
 
 		return view;
 	}
@@ -119,6 +109,14 @@ public class ResultInputFragment extends Fragment implements AdapterView.OnItemS
 		if (mListener != null) {
 			mListener.onFragmentInteraction(uri);
 		}
+	}
+
+	public void writeNewResult(String uid, String title, String date, double result) {
+		Map<String, Object> childUpdates = new HashMap<>();
+		childUpdates.put(date, result);
+
+		mDatabaase.child("users").child(uid).child("parameters").child(title).updateChildren(childUpdates);
+
 	}
 
 	@Override

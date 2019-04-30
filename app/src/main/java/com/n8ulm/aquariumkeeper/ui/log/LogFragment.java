@@ -23,6 +23,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Line;
+import com.anychart.data.Mapping;
+import com.anychart.data.Set;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.MarkerType;
+import com.anychart.enums.TooltipPositionMode;
+import com.anychart.graphics.vector.Stroke;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
@@ -31,21 +43,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LogFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LogFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class LogFragment extends Fragment {
-
-	private final String PARAMS_CHILD = "parameters";
 
 	// Member variables.
 	private RecyclerView mRecyclerView;
@@ -53,14 +62,6 @@ public class LogFragment extends Fragment {
 	private FirebaseUser mFirebaseUser;
 	private FirebaseRecyclerAdapter<Parameter, ParameterViewHolder> mFirebaseAdapter;
 
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
-
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
 
 	private OnFragmentInteractionListener mListener;
 	private final String TAG = LogFragment.class.getSimpleName();
@@ -72,8 +73,6 @@ public class LogFragment extends Fragment {
 	public static LogFragment newInstance(String param1, String param2) {
 		LogFragment fragment = new LogFragment();
 		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -82,8 +81,6 @@ public class LogFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
 		}
 
 	}
@@ -102,43 +99,45 @@ public class LogFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+
+
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.parameter_log_list);
 
 		mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 		mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-		SnapshotParser<Parameter> parser = new SnapshotParser<Parameter>() {
-			@NonNull
-			@Override
-			public Parameter parseSnapshot(@NonNull DataSnapshot snapshot) {
-				Parameter parameter = snapshot.getValue(Parameter.class);
-				if (parameter != null) {
-					parameter.setId(snapshot.getKey());
-				}
-				return parameter;
-			}
-		};
 
-		DatabaseReference parametersRef = mFirebaseDatabaseReference
-				.child("users")
-				.child(mFirebaseUser.getUid())
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		fetch();
+
+		// Inflate the layout for this fragment
+	}
+
+	private void fetch() {
+		Query query = FirebaseDatabase.getInstance().getReference()
+				.child("users").child(mFirebaseUser.getUid())
 				.child("parameters");
 
 		FirebaseRecyclerOptions<Parameter> options =
 				new FirebaseRecyclerOptions.Builder<Parameter>()
-						.setQuery(parametersRef, parser)
-						.build();
+						.setQuery(query, new SnapshotParser<Parameter>() {
+							@NonNull
+							@Override
+							public Parameter parseSnapshot(@NonNull DataSnapshot snapshot) {
+								String title = snapshot.getKey();
+								Log.d(TAG, title);
+								List<DataEntry> results = new ArrayList<>();
 
-//		LogFragmentViewModel viewModel = ViewModelProviders.of(getActivity()).get(LogFragmentViewModel.class);
-//
-//		LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
-//
-//		liveData.observe(getActivity(), new Observer<DataSnapshot>() {
-//			@Override
-//			public void onChanged(DataSnapshot dataSnapshot) {
-//				if (dataSnapshot != null);
-//			}
-//		});
+
+								for (DataSnapshot child : snapshot.getChildren()) {
+									results.add(new ValueDataEntry(child.getKey(), new Double(String.valueOf(child.getValue()))));
+									Log.d(TAG, child.getKey().toString() + " : "+ child.getValue().toString());
+								}
+
+								return new Parameter(title, results);
+							}
+						})
+						.build();
 
 		mFirebaseAdapter = new FirebaseRecyclerAdapter<Parameter, ParameterViewHolder>(options) {
 			@NonNull
@@ -152,10 +151,45 @@ public class LogFragment extends Fragment {
 			@Override
 			protected void onBindViewHolder(@NonNull ParameterViewHolder viewHolder, int i, @NonNull Parameter parameter) {
 				if (parameter.getParamTitle() != null) {
-					Log.d(TAG, "In onBindViewHolder, Parameter title is not null");
+
 					viewHolder.paramTitle.setText(parameter.getParamTitle());
+
+					Cartesian cartesian = AnyChart.line();
+
+					cartesian.animation(true);
+
+					cartesian.padding(10d, 20d, 5d, 20d);
+
+					cartesian.crosshair()
+							.yLabel(true)
+							.yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+					cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+					cartesian.yAxis(0).title("ppm/(mg/L)");
+					cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+
+					Set set = Set.instantiate();
+					set.data(parameter.getResults());
+					Mapping seriesMapping = set.mapAs("{x: 'x', value: 'value'}");
+
+					Line series = cartesian.line(seriesMapping);
+					series.hovered().markers().enabled(true);
+					series.hovered().markers()
+							.type(MarkerType.CIRCLE)
+							.size(4d);
+					series.tooltip()
+							.position("right")
+							.anchor(Anchor.LEFT_CENTER)
+							.offsetX(5d)
+							.offsetY(5d);
+
+					cartesian.legend().enabled(true);
+					cartesian.legend().fontSize(13d);
+					cartesian.legend().padding(0d, 0d, 10d, 0d);
+
+					viewHolder.parameterChart.setChart(cartesian);
 				}
-				Log.d(TAG, "In onBindViewHolder, Parameter title is null");
 			}
 		};
 
@@ -169,9 +203,6 @@ public class LogFragment extends Fragment {
 		});
 
 		mRecyclerView.setAdapter(mFirebaseAdapter);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-		// Inflate the layout for this fragment
 	}
 
 	@Override
@@ -224,9 +255,5 @@ public class LogFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		mFirebaseAdapter.startListening();
-	}
-
-	private void fetch() {
-
 	}
 }

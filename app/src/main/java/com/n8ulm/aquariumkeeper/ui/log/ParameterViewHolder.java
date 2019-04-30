@@ -6,9 +6,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.axes.Linear;
 import com.anychart.core.cartesian.series.Line;
 import com.n8ulm.aquariumkeeper.R;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 class ParameterViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,5 +34,18 @@ class ParameterViewHolder extends RecyclerView.ViewHolder {
 		parameterChart = itemView.findViewById(R.id.paramter_chart_view);
 		paramLastTestDate = itemView.findViewById(R.id.last_result_date_textview);
 		paramLastTestResult = itemView.findViewById(R.id.last_result_parameter_textview);
+	}
+
+	public void setTitle(String title) {
+		paramTitle.setText(title);
+	}
+
+	public void setChart(List<DataEntry> results) {
+		Cartesian line = AnyChart.line();
+		line.data(results);
+
+		AnyChartView anyChartView = (AnyChartView) parameterChart;
+		anyChartView.setChart(line);
+
 	}
 }
