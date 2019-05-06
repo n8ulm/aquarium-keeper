@@ -26,6 +26,8 @@ import com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment;
 import com.n8ulm.aquariumkeeper.ui.signin.SignInActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -41,7 +43,8 @@ public class MainActivity extends AppCompatActivity
 		GoogleApiClient.OnConnectionFailedListener,
 		NavigationView.OnNavigationItemSelectedListener,
 		LogFragment.OnFragmentInteractionListener,
-		ResultInputFragment.OnFragmentInteractionListener {
+		ResultInputFragment.OnFragmentInteractionListener,
+		DatePickerFragment.OnDateSelectedListener{
 
 	private static final String TAG = "MainActivity";
 	public static final String ANONYMOUS = "anonymous";
@@ -60,25 +63,8 @@ public class MainActivity extends AppCompatActivity
 
 	//private AdView mAdView;
 
-	private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-			= new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-		@Override
-		public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-			switch (item.getItemId()) {
-				case R.id.navigation_log:
 
-					return true;
-				case R.id.navigation_dashboard:
-
-					return true;
-				case R.id.navigation_notifications:
-
-					return true;
-			}
-			return false;
-		}
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +74,6 @@ public class MainActivity extends AppCompatActivity
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		// Set default username is anonymous.
 		mUsername = ANONYMOUS;
-
-		BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-		navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
@@ -136,11 +119,6 @@ public class MainActivity extends AppCompatActivity
 		@Override
 		public boolean onOptionsItemSelected (MenuItem item){
 			switch (item.getItemId()) {
-				case R.id.add_result:
-					NavController navController =
-							Navigation.findNavController(this, R.id.my_nav_host_fragment);
-					navController.navigate(R.id.action_logFragment_to_resultInputFragment);
-					return true;
 				case R.id.crash_menu:
 					Log.w("Crashlytics", "Crash button clicked");
 					causeCrash();
@@ -201,6 +179,7 @@ public class MainActivity extends AppCompatActivity
 		@Override
 		public void onFragmentInteraction (Uri uri){
 
+
 		}
 
 		@Override
@@ -213,6 +192,36 @@ public class MainActivity extends AppCompatActivity
 
 		mFirebaseDatabaseReference.child("users").child(userId).child("user").setValue(user);
 		Log.d(TAG, "wrote new user to firebase database");
+	}
+
+	@Override
+	public void onAttachFragment(@NonNull Fragment fragment) {
+		super.onAttachFragment(fragment);
+		if (fragment instanceof DatePickerFragment) {
+			DatePickerFragment pickerFragment = (DatePickerFragment) fragment;
+			pickerFragment.setOnDateSelectedListener(this);
+		}
+	}
+
+	@Override
+	public void onDateSelected(int year, int month, int day) {
+		ResultInputFragment inputFragment = (ResultInputFragment)
+				getSupportFragmentManager().findFragmentById(R.id.resultInputFragment);
+		if (inputFragment != null) {
+			inputFragment.updateDate(year, month, day);
+		} else {
+			ResultInputFragment newFrag = ResultInputFragment.newInstance(year, month, day);
+
+			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+			transaction.replace(R.id.my_nav_host_fragment, newFrag);
+			transaction.addToBackStack(null);
+
+			transaction.commit();
+
+		}
+
+
 	}
 
 }

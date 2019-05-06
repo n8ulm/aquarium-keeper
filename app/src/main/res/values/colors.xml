@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#0097A7</color>
     <color name="colorAccent">#FFC107</color>
     <color name="colorPrimaryLight">#B2EBF2</color>
+    <color name="colorLilac">#CE93D8</color>
+    <color name="lightpurple">#E1BEE7</color>
+    <color name="highlight">#F3E5F5</color>
 </resources>

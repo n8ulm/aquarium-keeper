@@ -1,25 +1,23 @@
 package com.n8ulm.aquariumkeeper.data;
 
-import com.anychart.chart.common.dataentry.DataEntry;
+import com.github.mikephil.charting.data.Entry;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 public class Parameter {
 
 	private String paramTitle;
-	private List<DataEntry> results;
-	private String paramDate;
-	private String paramResult;
+	private List<Entry> results;
+	private Double paramDate;
+	private Double paramResult;
 
 	public Parameter() {
 	}
 
-	public Parameter(String paramTitle, List<DataEntry> results) {
+	public Parameter(String paramTitle, List<Entry> results) {
 		this.paramTitle = paramTitle;
 		this.results = results;
 	}
@@ -36,25 +34,25 @@ public class Parameter {
 
 	public void setParamTitle() { this.paramTitle = paramTitle; }
 
-	public String getParamDate() {
+	public Double getParamDate() {
 		return paramDate;
 	}
 
-	public void setParamDate(String paramDate) {
+	public void setParamDate(Double paramDate) {
 		this.paramDate = paramDate;
 	}
 
-	public void setParamResult(String paramResult) {
+	public void setParamResult(Double paramResult) {
 		this.paramResult = paramResult;
 	}
 
-	public String getParamResult() {
+	public Double getParamResult() {
 		return paramResult;
 	}
 
-	public List<DataEntry> getResults() { return results; }
+	public List<Entry> getResults() { return results; }
 
-	public void setResults(List<DataEntry> results) { this.results = results; }
+	public void setResults(List<Entry> results) { this.results = results; }
 
 
 

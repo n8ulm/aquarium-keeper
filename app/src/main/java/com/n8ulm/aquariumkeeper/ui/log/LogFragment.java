@@ -8,10 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,37 +17,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
-import com.anychart.AnyChart;
-import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
-import com.anychart.charts.Cartesian;
-import com.anychart.core.cartesian.series.Line;
-import com.anychart.data.Mapping;
-import com.anychart.data.Set;
-import com.anychart.enums.Anchor;
-import com.anychart.enums.MarkerType;
-import com.anychart.enums.TooltipPositionMode;
-import com.anychart.graphics.vector.Stroke;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class LogFragment extends Fragment {
@@ -99,7 +86,15 @@ public class LogFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-
+		FloatingActionButton fab = view.findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				NavController navController =
+						Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
+				navController.navigate(R.id.action_logFragment_to_resultInputFragment);
+			}
+		});
 
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.parameter_log_list);
 
@@ -112,6 +107,8 @@ public class LogFragment extends Fragment {
 
 		// Inflate the layout for this fragment
 	}
+
+
 
 	private void fetch() {
 		Query query = FirebaseDatabase.getInstance().getReference()
@@ -126,12 +123,14 @@ public class LogFragment extends Fragment {
 							public Parameter parseSnapshot(@NonNull DataSnapshot snapshot) {
 								String title = snapshot.getKey();
 								Log.d(TAG, title);
-								List<DataEntry> results = new ArrayList<>();
 
+								List<Entry> results = new ArrayList<>();
 
 								for (DataSnapshot child : snapshot.getChildren()) {
-									results.add(new ValueDataEntry(child.getKey(), new Double(String.valueOf(child.getValue()))));
-									Log.d(TAG, child.getKey().toString() + " : "+ child.getValue().toString());
+									float x = toFloat(child.getKey());
+									float y = toFloat(child.getValue());
+
+									results.add(new Entry(x, y));
 								}
 
 								return new Parameter(title, results);
@@ -151,44 +150,15 @@ public class LogFragment extends Fragment {
 			@Override
 			protected void onBindViewHolder(@NonNull ParameterViewHolder viewHolder, int i, @NonNull Parameter parameter) {
 				if (parameter.getParamTitle() != null) {
+					String title = capitalizeString(parameter.getParamTitle());
+					viewHolder.paramTitle.setText(title);
 
-					viewHolder.paramTitle.setText(parameter.getParamTitle());
+					LineDataSet dataSet = new LineDataSet(parameter.getResults(), "Label");
+					LineData lineData = new LineData(dataSet);
+					viewHolder.parameterChart.setData(lineData);
+					viewHolder.parameterChart.invalidate();
 
-					Cartesian cartesian = AnyChart.line();
 
-					cartesian.animation(true);
-
-					cartesian.padding(10d, 20d, 5d, 20d);
-
-					cartesian.crosshair()
-							.yLabel(true)
-							.yStroke((Stroke) null, null, null, (String) null, (String) null);
-
-					cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-
-					cartesian.yAxis(0).title("ppm/(mg/L)");
-					cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-
-					Set set = Set.instantiate();
-					set.data(parameter.getResults());
-					Mapping seriesMapping = set.mapAs("{x: 'x', value: 'value'}");
-
-					Line series = cartesian.line(seriesMapping);
-					series.hovered().markers().enabled(true);
-					series.hovered().markers()
-							.type(MarkerType.CIRCLE)
-							.size(4d);
-					series.tooltip()
-							.position("right")
-							.anchor(Anchor.LEFT_CENTER)
-							.offsetX(5d)
-							.offsetY(5d);
-
-					cartesian.legend().enabled(true);
-					cartesian.legend().fontSize(13d);
-					cartesian.legend().padding(0d, 0d, 10d, 0d);
-
-					viewHolder.parameterChart.setChart(cartesian);
 				}
 			}
 		};
@@ -204,6 +174,24 @@ public class LogFragment extends Fragment {
 
 		mRecyclerView.setAdapter(mFirebaseAdapter);
 	}
+
+	private String capitalizeString(String string) {
+		StringBuilder result = new StringBuilder(string);
+		result.replace(0,1, string.substring(0,1).toUpperCase());
+		result.replace(1, string.length(), string.substring(1, string.length()).toLowerCase());
+
+		return result.toString();
+	}
+
+	private float toFloat(Object object) {
+		String input = object.toString();
+
+		Log.d("FLOAT", String.valueOf(Float.parseFloat(input)));
+
+		return Float.parseFloat(input);
+
+	}
+
 
 	@Override
 	public void postponeEnterTransition() {
@@ -255,5 +243,10 @@ public class LogFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		mFirebaseAdapter.startListening();
+	}
+
+	@Override
+	public void onAttachFragment(@NonNull Fragment childFragment) {
+		super.onAttachFragment(childFragment);
 	}
 }
