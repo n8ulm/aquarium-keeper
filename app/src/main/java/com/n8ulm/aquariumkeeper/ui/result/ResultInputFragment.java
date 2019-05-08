@@ -4,15 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anychart.scales.DateTime;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -35,14 +31,7 @@ import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 import com.n8ulm.aquariumkeeper.ui.DatePickerFragment;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +54,7 @@ public class ResultInputFragment extends Fragment
 	private String mMSDate;
 
 	private Button mSaveResultButton;
-	private Button mCancelResultButton;
+	private Button mViewLogButton;
 
 	private DatabaseReference mDatabaase;
 	private FirebaseUser mUser;
@@ -135,10 +124,8 @@ public class ResultInputFragment extends Fragment
 					String title = spinner.getSelectedItem().toString().toLowerCase();
 
 					writeNewResult(mUser.getUid(), title, mMSDate, new Double(String.valueOf(mTestResult.getText())));
-
-					NavController navController =
-							Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
-					navController.navigate(R.id.action_resultInputFragment_to_logFragment);
+					Toast.makeText(getActivity(),
+							"Result Added", Toast.LENGTH_LONG).show();
 
 				} else {
 					 Toast.makeText(getActivity(),
@@ -148,8 +135,8 @@ public class ResultInputFragment extends Fragment
 			}
 		});
 
-		mCancelResultButton = (Button) view.findViewById(R.id.cancel_result_button);
-		mCancelResultButton.setOnClickListener(new View.OnClickListener() {
+		mViewLogButton = (Button) view.findViewById(R.id.view_log_button);
+		mViewLogButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				NavController navController =

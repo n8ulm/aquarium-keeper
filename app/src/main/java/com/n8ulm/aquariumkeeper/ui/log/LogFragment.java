@@ -184,6 +184,12 @@ public class LogFragment extends Fragment {
 		result.replace(0,1, string.substring(0,1).toUpperCase());
 		result.replace(1, string.length(), string.substring(1, string.length()).toLowerCase());
 
+		if (string.contains(" ")) {
+			int index = string.indexOf(" ") + 1;
+
+			result.replace(index, index + 1, string.substring(index, index + 1).toUpperCase());
+		}
+
 		return result.toString();
 	}
 
