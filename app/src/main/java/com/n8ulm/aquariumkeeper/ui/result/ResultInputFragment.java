@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 import com.n8ulm.aquariumkeeper.ui.DatePickerFragment;
+import com.n8ulm.aquariumkeeper.ui.MainActivity;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -139,9 +142,10 @@ public class ResultInputFragment extends Fragment
 		mViewLogButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+
 				NavController navController =
 						Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
-				navController.navigate(R.id.action_resultInputFragment_to_logFragment);
+				navController.navigate(R.id.action_dashboardFragment_to_logFragment);
 			}
 		});
 

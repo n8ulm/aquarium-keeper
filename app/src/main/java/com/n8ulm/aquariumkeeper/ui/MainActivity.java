@@ -12,6 +12,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.n8ulm.aquariumkeeper.AquariumsFragment;
+import com.n8ulm.aquariumkeeper.DashboardFragment;
+import com.n8ulm.aquariumkeeper.PageAdapter;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.TaskFragment;
 import com.n8ulm.aquariumkeeper.data.User;
@@ -32,6 +35,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -48,7 +53,8 @@ public class MainActivity extends AppCompatActivity
 		ResultInputFragment.OnFragmentInteractionListener,
 		DatePickerFragment.OnDateSelectedListener,
 		TaskFragment.OnFragmentInteractionListener,
-		AquariumsFragment.OnFragmentInteractionListener{
+		AquariumsFragment.OnFragmentInteractionListener,
+        DashboardFragment.OnFragmentInteractionListener {
 
 	private static final String TAG = "MainActivity";
 	public static final String ANONYMOUS = "anonymous";
@@ -57,6 +63,8 @@ public class MainActivity extends AppCompatActivity
 
 	private SharedPreferences mSharedPreferences;
 	private GoogleApiClient mGoogleApiClient;
+
+
 
 	// Firebase instance variables
 	private FirebaseAuth mFirebaseAuth;
@@ -68,37 +76,10 @@ public class MainActivity extends AppCompatActivity
 	//private AdView mAdView;
 
 
-	private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-			= new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-		@Override
-		public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-			NavController navController =
-					Navigation.findNavController(MainActivity.this, R.id.my_nav_host_fragment);
-			switch (item.getItemId()) {
-//				case R.id.navigation_log:
-//					navController.navigate(R.id.logFragment);
-//					return true;
-				case R.id.navigation_add_result:
-					navController.navigate(R.id.resultInputFragment);
-					return true;
-				case R.id.navigation_my_aquariums:
-					navController.navigate(R.id.aquariumsFragment);
-					return true;
-			}
-			return false;
-		}
-
-	};
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-		navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		// Set default username is anonymous.
@@ -225,21 +206,6 @@ public class MainActivity extends AppCompatActivity
 
 	@Override
 	public void onDateSelected(int year, int month, int day) {
-		ResultInputFragment inputFragment = (ResultInputFragment)
-				getSupportFragmentManager().findFragmentById(R.id.resultInputFragment);
-		if (inputFragment != null) {
-			inputFragment.updateDate(year, month, day);
-		} else {
-			ResultInputFragment newFrag = ResultInputFragment.newInstance("aquarium1");
-
-			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-			transaction.replace(R.id.my_nav_host_fragment, newFrag);
-			transaction.addToBackStack(null);
-
-			transaction.commit();
-
-		}
 
 
 	}

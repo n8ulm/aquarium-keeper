@@ -3,17 +3,17 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/mobile_navigation"
-            app:startDestination="@id/logFragment">
+            app:startDestination="@id/dashboardFragment">
 
     <fragment
         android:id="@+id/logFragment"
         android:name="com.n8ulm.aquariumkeeper.ui.log.LogFragment"
         android:label="fragment_log"
         tools:layout="@layout/fragment_log" >
+
         <action
-            android:id="@+id/action_logFragment_to_resultInputFragment"
-            app:destination="@id/resultInputFragment"
-            />
+            android:id="@+id/action_logFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
     </fragment>
 
     <fragment
@@ -25,14 +25,13 @@
             app:destination="@+id/logFragment"/>
     </fragment>
     <fragment
-        android:id="@+id/taskFragment"
-        android:name="com.n8ulm.aquariumkeeper.TaskFragment"
-        android:label="fragment_task"
-        tools:layout="@layout/fragment_task" />
-    <fragment
-        android:id="@+id/aquariumsFragment"
-        android:name="com.n8ulm.aquariumkeeper.AquariumsFragment"
-        android:label="fragment_aquariums"
-        tools:layout="@layout/fragment_aquariums" />
+        android:id="@+id/dashboardFragment"
+        android:name="com.n8ulm.aquariumkeeper.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_logFragment"
+            app:destination="@id/logFragment" />
+    </fragment>
 
 </navigation>
