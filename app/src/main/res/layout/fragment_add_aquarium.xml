@@ -3,16 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.aquarium.AddAquariumFragment" >
+    tools:context=".ui.aquarium.AddAquariumFragment">
 
     <TextView
-        android:id="@+id/title_textView"
+        android:id="@+id/add_aq_title_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Test"
+        android:text="Add Aquarium"
         android:textSize="30sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         android:id="@+id/type_spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/title_textView" />
+        app:layout_constraintTop_toBottomOf="@id/add_aq_title_textView" />
 
     <LinearLayout
         android:id="@+id/aquarium_title_layout"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@id/type_spinner">
 
         <TextView
-            android:id="@+id/aquarium_title"
+            android:id="@+id/aquarium_title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:paddingEnd="10dp"
-            android:text=""
+            android:text="My Aquarium"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -58,21 +58,15 @@
         app:layout_constraintTop_toBottomOf="@id/aquarium_title_layout"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/aquarium_size"
+        <EditText
+            android:id="@+id/aquarium_size_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="10dp"
             android:text="Size"
-            android:textSize="18dp"/>
+            android:textSize="18dp"
+            android:inputType="numberDecimal"/>
 
-        <EditText
-            android:id="@+id/result_date_input"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:paddingEnd="10dp"
-            android:layout_weight="1"/>
 
         <Spinner
             android:id="@+id/unit_spinner"

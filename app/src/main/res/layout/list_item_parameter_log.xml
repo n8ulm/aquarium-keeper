@@ -9,14 +9,12 @@
     android:minHeight="350dp"
     android:elevation="8dp"
     android:theme="@style/Text"
-
     app:cardBackgroundColor="@color/colorMaterialLight"
     app:cardCornerRadius="8dp"
     app:strokeColor="@color/colorMaterialGrey"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minHeight="350dp">
@@ -26,10 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/parameter_title_textview"
@@ -37,13 +34,11 @@
             android:layout_height="wrap_content"
             android:text="Parameter"
             android:textSize="26dp"
-
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
-
             android:theme="@style/TitleText"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/paramter_chart_view" />
+            app:layout_constraintTop_toBottomOf="@id/paramter_chart_view"/>
 
         <TextView
             android:id="@+id/parameter_safe_range_textview"
@@ -53,7 +48,6 @@
             android:textSize="18dp"
             android:layout_marginTop="6dp"
             android:layout_marginStart="16dp"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/parameter_title_textview"/>
 
@@ -66,9 +60,8 @@
             android:textSize="18dp"
             android:layout_marginTop="4dp"
             android:layout_marginStart="16dp"
-
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/parameter_safe_range_textview" />
+            app:layout_constraintTop_toBottomOf="@id/parameter_safe_range_textview"/>
 
         <Button
             android:id="@+id/edit_results"
@@ -84,8 +77,4 @@
             android:layout_marginEnd="2dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
 </com.google.android.material.card.MaterialCardView>

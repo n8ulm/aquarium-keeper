@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
+import com.n8ulm.aquariumkeeper.ui.aquarium.AquariumsFragment;
 import com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment;
 
 public class PageAdapter extends FragmentStatePagerAdapter {

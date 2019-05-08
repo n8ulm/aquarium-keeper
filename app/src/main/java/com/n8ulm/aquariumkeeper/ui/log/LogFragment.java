@@ -49,8 +49,6 @@ public class LogFragment extends Fragment {
 	private DatabaseReference mFirebaseDatabaseReference;
 	private FirebaseUser mFirebaseUser;
 	private FirebaseRecyclerAdapter<Parameter, ParameterViewHolder> mFirebaseAdapter;
-
-
 	private OnFragmentInteractionListener mListener;
 	private final String TAG = LogFragment.class.getSimpleName();
 
