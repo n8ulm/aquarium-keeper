@@ -152,7 +152,11 @@ public class LogFragment extends Fragment {
 					String title = capitalizeString(parameter.getParamTitle());
 					viewHolder.setTitle(title);
 					viewHolder.setLastResult(parameter.getParamDate(), parameter.getParamResult());
-					viewHolder.setSafeRange(parameter.getParamSafeRange());
+					if (parameter.getParamSafeRange() != null) {
+						viewHolder.setSafeRange(parameter.getParamSafeRange());
+					} else {
+						viewHolder.paramSafeRange.setVisibility(View.INVISIBLE);
+					}
 
 
 					LineDataSet dataSet = new LineDataSet(parameter.getResults(), "Label");

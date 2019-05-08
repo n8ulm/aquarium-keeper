@@ -76,6 +76,5 @@ public class Parameter {
 				return "ppm";
 		}
 	}
-
-
+	
 }
