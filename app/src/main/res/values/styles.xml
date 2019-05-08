@@ -1,11 +1,30 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    
+    <style name="TitleText" parent="AppTheme">
+        <item name="android:textSize">24dp</item>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <style name="Text" parent="AppTheme">
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/rubik</item>
+    </style>
+
+    <style name="PrimaryFlatButton" parent="Theme.MaterialComponents.Light">
+        <item name="android:buttonStyle">
+            @style/Widget.AppCompat.Button.Borderless.Colored
+        </item>
+        <item name="colorAccent">@color/colorLilac</item>
+        <item name="android:textSize">18dp</item>
     </style>
 
 </resources>

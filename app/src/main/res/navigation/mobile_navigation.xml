@@ -24,5 +24,15 @@
             android:id="@+id/action_resultInputFragment_to_logFragment"
             app:destination="@+id/logFragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/taskFragment"
+        android:name="com.n8ulm.aquariumkeeper.TaskFragment"
+        android:label="fragment_task"
+        tools:layout="@layout/fragment_task" />
+    <fragment
+        android:id="@+id/aquariumsFragment"
+        android:name="com.n8ulm.aquariumkeeper.AquariumsFragment"
+        android:label="fragment_aquariums"
+        tools:layout="@layout/fragment_aquariums" />
 
 </navigation>

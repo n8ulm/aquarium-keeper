@@ -1,4 +1,4 @@
-package com.n8ulm.aquariumkeeper.ui.tank;
+package com.n8ulm.aquariumkeeper.ui.aquarium;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -14,24 +14,24 @@ import android.view.ViewGroup;
 
 import com.n8ulm.aquariumkeeper.R;
 
-public class AddTankFragment extends Fragment {
+public class AddAquariumFragment extends Fragment {
 
-    private AddTankViewModel mViewModel;
+    private AddAquariumViewModel mViewModel;
 
-    public static AddTankFragment newInstance() {
-        return new AddTankFragment();
+    public static AddAquariumFragment newInstance() {
+        return new AddAquariumFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.add_tank_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_add_aquarium, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AddTankViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(AddAquariumViewModel.class);
         // TODO: Use the ViewModel
     }
 

@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.anychart.scales.DateTime;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.n8ulm.aquariumkeeper.R;
+import com.n8ulm.aquariumkeeper.data.Parameter;
 import com.n8ulm.aquariumkeeper.ui.DatePickerFragment;
 
 import java.sql.Timestamp;
@@ -47,19 +49,18 @@ import java.util.Map;
 
 public class ResultInputFragment extends Fragment
 		implements AdapterView.OnItemSelectedListener,
-					DatePickerFragment.OnDateSelectedListener{
+					DatePickerFragment.OnDateSelectedListener {
 
+	private static final String AQUARIUM_ARG = "currentAquarium";
 
-	private static final String ARG_YEAR = "year";
-	private static final String ARG_MONTH = "month";
-	private static final String ARG_DAY = "day";
-
+	private String currentAquarium = "aquarium1";
 
 
 	// Memeber Variable
 	private OnFragmentInteractionListener mListener;
 	private EditText mTestResult;
 	private EditText mTestDate;
+	private TextView mUnitLabel;
 	private ImageButton mDateButton;
 	private String mMSDate;
 
@@ -75,12 +76,10 @@ public class ResultInputFragment extends Fragment
 
 
 
-	public static ResultInputFragment newInstance(int year, int month, int day) {
+	public static ResultInputFragment newInstance(String currentAquarium) {
 		ResultInputFragment fragment = new ResultInputFragment();
 		Bundle args = new Bundle();
-		args.putInt(ARG_YEAR, year);
-		args.putInt(ARG_MONTH, month);
-		args.putInt(ARG_DAY, day);
+		args.putString(AQUARIUM_ARG, currentAquarium);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -89,7 +88,7 @@ public class ResultInputFragment extends Fragment
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-
+			currentAquarium = savedInstanceState.getString(AQUARIUM_ARG);
 		}
 	}
 
@@ -115,18 +114,14 @@ public class ResultInputFragment extends Fragment
 
 		mTestResult = view.findViewById(R.id.result_input);
 
+		mUnitLabel = view.findViewById(R.id.unit_label);
+
 		final Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH);
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 
 		updateDate(year, month, day);
-
-		if (savedInstanceState != null){
-			updateDate(savedInstanceState.getInt(ARG_YEAR),
-					savedInstanceState.getInt(ARG_MONTH),
-					savedInstanceState.getInt(ARG_DAY));
-		}
 
 		mDatabaase = FirebaseDatabase.getInstance().getReference();
 		mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -135,15 +130,20 @@ public class ResultInputFragment extends Fragment
 		mSaveResultButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String title = spinner.getSelectedItem().toString().toLowerCase();
 
-				writeNewResult(mUser.getUid(), title, mMSDate, new Double(String.valueOf(mTestResult.getText())));
+				if (!mTestResult.getText().equals("")) {
+					String title = spinner.getSelectedItem().toString().toLowerCase();
 
-				NavController navController =
-						Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
-				navController.navigate(R.id.action_resultInputFragment_to_logFragment);
+					writeNewResult(mUser.getUid(), title, mMSDate, new Double(String.valueOf(mTestResult.getText())));
 
+					NavController navController =
+							Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
+					navController.navigate(R.id.action_resultInputFragment_to_logFragment);
 
+				} else {
+					 Toast.makeText(getActivity(),
+							"Please Enter a Test Result", Toast.LENGTH_LONG).show();
+				}
 
 			}
 		});
@@ -202,7 +202,8 @@ public class ResultInputFragment extends Fragment
 		Map<String, Object> childUpdates = new HashMap<>();
 		childUpdates.put(date, result);
 
-		mDatabaase.child("users").child(uid).child("parameters").child(title).updateChildren(childUpdates);
+
+		mDatabaase.child("users").child(uid).child("parameters").child(currentAquarium).child(title).child("results").updateChildren(childUpdates);
 
 	}
 
@@ -225,6 +226,8 @@ public class ResultInputFragment extends Fragment
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+		mUnitLabel.setText(Parameter.getUnits((String) parent.getItemAtPosition(position)));
 
 	}
 

@@ -19,7 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.n8ulm.aquariumkeeper.AquariumsFragment;
 import com.n8ulm.aquariumkeeper.R;
+import com.n8ulm.aquariumkeeper.TaskFragment;
 import com.n8ulm.aquariumkeeper.data.User;
 import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
 import com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment;
@@ -44,7 +46,9 @@ public class MainActivity extends AppCompatActivity
 		NavigationView.OnNavigationItemSelectedListener,
 		LogFragment.OnFragmentInteractionListener,
 		ResultInputFragment.OnFragmentInteractionListener,
-		DatePickerFragment.OnDateSelectedListener{
+		DatePickerFragment.OnDateSelectedListener,
+		TaskFragment.OnFragmentInteractionListener,
+		AquariumsFragment.OnFragmentInteractionListener{
 
 	private static final String TAG = "MainActivity";
 	public static final String ANONYMOUS = "anonymous";
@@ -64,12 +68,37 @@ public class MainActivity extends AppCompatActivity
 	//private AdView mAdView;
 
 
+	private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+			= new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+		@Override
+		public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+			NavController navController =
+					Navigation.findNavController(MainActivity.this, R.id.my_nav_host_fragment);
+			switch (item.getItemId()) {
+//				case R.id.navigation_log:
+//					navController.navigate(R.id.logFragment);
+//					return true;
+				case R.id.navigation_add_result:
+					navController.navigate(R.id.resultInputFragment);
+					return true;
+				case R.id.navigation_my_aquariums:
+					navController.navigate(R.id.aquariumsFragment);
+					return true;
+			}
+			return false;
+		}
+
+	};
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+		navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 		mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		// Set default username is anonymous.
@@ -119,15 +148,6 @@ public class MainActivity extends AppCompatActivity
 		@Override
 		public boolean onOptionsItemSelected (MenuItem item){
 			switch (item.getItemId()) {
-				case R.id.crash_menu:
-					Log.w("Crashlytics", "Crash button clicked");
-					causeCrash();
-				case R.id.invite_menu:
-					//sendInvitation();
-					return true;
-				case R.id.fresh_config_menu:
-					//fetchConfig();
-					return true;
 				case R.id.sign_out_menu:
 					mFirebaseAuth.signOut();
 					Auth.GoogleSignInApi.signOut(mGoogleApiClient);
@@ -135,7 +155,7 @@ public class MainActivity extends AppCompatActivity
 					startActivity(new Intent(this, SignInActivity.class));
 					finish();
 					return true;
-				case R.id.add_tank:
+				case R.id.select_aquarium:
 					return true;
 				default:
 					return super.onOptionsItemSelected(item);
@@ -210,7 +230,7 @@ public class MainActivity extends AppCompatActivity
 		if (inputFragment != null) {
 			inputFragment.updateDate(year, month, day);
 		} else {
-			ResultInputFragment newFrag = ResultInputFragment.newInstance(year, month, day);
+			ResultInputFragment newFrag = ResultInputFragment.newInstance("aquarium1");
 
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 

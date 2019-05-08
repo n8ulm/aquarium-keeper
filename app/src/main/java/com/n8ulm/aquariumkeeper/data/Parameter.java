@@ -11,42 +11,40 @@ public class Parameter {
 
 	private String paramTitle;
 	private List<Entry> results;
-	private Double paramDate;
-	private Double paramResult;
+	private float paramDate;
+	private float paramResult;
+
+	private String paramSafeRange;
 
 	public Parameter() {
 	}
 
-	public Parameter(String paramTitle, List<Entry> results) {
+	public Parameter(String paramTitle, List<Entry> results, float paramDate, float paramResult, String paramSafeRange) {
 		this.paramTitle = paramTitle;
 		this.results = results;
+		this.paramDate = paramDate;
+		this.paramResult = paramResult;
+		this.paramSafeRange = paramSafeRange;
 	}
 
-	private String getDate() {
-		String pattern = "MMMMM dd, yyyy";
-
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern, new Locale("en", "US"));
-
-		return sdf.format(new Date());
-	}
 
 	public String getParamTitle() { return  paramTitle; }
 
 	public void setParamTitle() { this.paramTitle = paramTitle; }
 
-	public Double getParamDate() {
+	public float getParamDate() {
 		return paramDate;
 	}
 
-	public void setParamDate(Double paramDate) {
+	public void setParamDate(float paramDate) {
 		this.paramDate = paramDate;
 	}
 
-	public void setParamResult(Double paramResult) {
+	public void setParamResult(float paramResult) {
 		this.paramResult = paramResult;
 	}
 
-	public Double getParamResult() {
+	public float getParamResult() {
 		return paramResult;
 	}
 
@@ -54,7 +52,30 @@ public class Parameter {
 
 	public void setResults(List<Entry> results) { this.results = results; }
 
+	public String getParamSafeRange() {
+		return paramSafeRange;
+	}
 
+	public void setParamSafeRange(String paramSafeRange) {
+		this.paramSafeRange = paramSafeRange;
+	}
+
+	public static String getUnits(String parameter) {
+		switch(parameter){
+			case "pH":
+				return "";
+			case "Temperature":
+				return "degrees";
+			case "Alkalinity":
+				return "dKH";
+			case "General Hardness":
+				return "GH";
+			case "Specific Gravity":
+				return "";
+			default:
+				return "ppm";
+		}
+	}
 
 
 }

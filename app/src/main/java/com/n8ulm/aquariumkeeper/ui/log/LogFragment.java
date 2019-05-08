@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.solver.widgets.Snapshot;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -53,6 +54,8 @@ public class LogFragment extends Fragment {
 	private OnFragmentInteractionListener mListener;
 	private final String TAG = LogFragment.class.getSimpleName();
 
+	private String mCurrentAquarium = "aquarium1";
+
 	public LogFragment() {
 		// Required empty public constructor
 	}
@@ -86,16 +89,6 @@ public class LogFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		FloatingActionButton fab = view.findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				NavController navController =
-						Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
-				navController.navigate(R.id.action_logFragment_to_resultInputFragment);
-			}
-		});
-
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.parameter_log_list);
 
 		mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -111,9 +104,10 @@ public class LogFragment extends Fragment {
 
 
 	private void fetch() {
-		Query query = FirebaseDatabase.getInstance().getReference()
+		Query query = mFirebaseDatabaseReference
 				.child("users").child(mFirebaseUser.getUid())
-				.child("parameters");
+				.child("parameters")
+				.child(mCurrentAquarium);
 
 		FirebaseRecyclerOptions<Parameter> options =
 				new FirebaseRecyclerOptions.Builder<Parameter>()
@@ -124,16 +118,21 @@ public class LogFragment extends Fragment {
 								String title = snapshot.getKey();
 								Log.d(TAG, title);
 
+								String safeRange = "Safe Range: " + (String) snapshot.child("saferange").getValue();
+
 								List<Entry> results = new ArrayList<>();
 
-								for (DataSnapshot child : snapshot.getChildren()) {
+								for (DataSnapshot child : snapshot.child("results").getChildren()) {
 									float x = toFloat(child.getKey());
 									float y = toFloat(child.getValue());
 
 									results.add(new Entry(x, y));
 								}
 
-								return new Parameter(title, results);
+								float lastDate = results.get(results.size()-1).getX();
+								float lastResult = results.get(results.size()-1).getY();
+
+								return new Parameter(title, results, lastDate, lastResult, safeRange);
 							}
 						})
 						.build();
@@ -151,14 +150,15 @@ public class LogFragment extends Fragment {
 			protected void onBindViewHolder(@NonNull ParameterViewHolder viewHolder, int i, @NonNull Parameter parameter) {
 				if (parameter.getParamTitle() != null) {
 					String title = capitalizeString(parameter.getParamTitle());
-					viewHolder.paramTitle.setText(title);
+					viewHolder.setTitle(title);
+					viewHolder.setLastResult(parameter.getParamDate(), parameter.getParamResult());
+					viewHolder.setSafeRange(parameter.getParamSafeRange());
+
 
 					LineDataSet dataSet = new LineDataSet(parameter.getResults(), "Label");
 					LineData lineData = new LineData(dataSet);
 					viewHolder.parameterChart.setData(lineData);
 					viewHolder.parameterChart.invalidate();
-
-
 				}
 			}
 		};
@@ -249,4 +249,5 @@ public class LogFragment extends Fragment {
 	public void onAttachFragment(@NonNull Fragment childFragment) {
 		super.onAttachFragment(childFragment);
 	}
+
 }

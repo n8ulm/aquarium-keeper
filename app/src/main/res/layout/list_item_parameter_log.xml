@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:cardMaxElevation="1dp"
-    app:cardElevation="0.7dp"
-    app:contentPadding="30dp"
-    app:contentPaddingBottom="0dp"
-    app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true"
+    style="@style/Widget.MaterialComponents.CardView"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
-    app:cardCornerRadius="4dp"
-    android:layout_margin="5dp"
-    app:cardBackgroundColor="@color/lightpurple">
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:minHeight="350dp"
+    android:elevation="8dp"
+    android:theme="@style/Text"
+
+    app:cardBackgroundColor="@color/colorMaterialLight"
+    app:cardCornerRadius="8dp"
+    app:strokeColor="@color/colorMaterialGrey"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:minHeight="350dp">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/paramter_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/parameter_title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Parameter"
-            android:textSize="18dp"
+            android:textSize="26dp"
+
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+
+            android:theme="@style/TitleText"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/paramter_chart_view" />
 
         <TextView
             android:id="@+id/parameter_safe_range_textview"
@@ -35,15 +51,12 @@
             android:layout_height="wrap_content"
             android:text="Safe Range"
             android:textSize="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="16dp"
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/paramter_chart_view"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintTop_toBottomOf="@+id/parameter_title_textview"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/parameter_title_textview"/>
+
 
         <TextView
             android:id="@+id/last_result_date_textview"
@@ -51,18 +64,28 @@
             android:layout_height="wrap_content"
             android:text="Last Test"
             android:textSize="18dp"
-            app:layout_constraintTop_toBottomOf="@id/paramter_chart_view"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
 
-        <TextView
-            android:id="@+id/last_result_parameter_textview"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/parameter_safe_range_textview" />
+
+        <Button
+            android:id="@+id/edit_results"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Last Result"
-            android:textSize="18dp"
-            app:layout_constraintTop_toBottomOf="@id/paramter_chart_view"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="Edit Results"
+            android:theme="@style/PrimaryFlatButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="2dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+
+
+
+</com.google.android.material.card.MaterialCardView>
