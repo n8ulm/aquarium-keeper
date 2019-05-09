@@ -24,6 +24,24 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/action_logFragment_to_editListFragment"
+            app:destination="@id/editListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <argument
+                android:name="idArg"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="aquarium1" />
+            <argument
+                android:name="paramArg"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="ammonia" />
+        </action>
     </fragment>
 
     <fragment
@@ -97,8 +115,19 @@
     </fragment>
     <fragment
         android:id="@+id/editListFragment"
-        android:name="com.n8ulm.aquariumkeeper.EditListFragment"
+        android:name="com.n8ulm.aquariumkeeper.ui.editList.EditListFragment"
         android:label="fragment_edit_list"
-        tools:layout="@layout/fragment_edit_list" />
+        tools:layout="@layout/fragment_edit_list" >
+        <argument
+            android:name="idArg"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="aquarium1" />
+        <argument
+            android:name="paramArg"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="ammonia" />
+    </fragment>
 
 </navigation>

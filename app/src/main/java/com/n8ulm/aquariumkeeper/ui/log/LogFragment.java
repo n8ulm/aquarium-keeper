@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -149,7 +150,7 @@ public class LogFragment extends Fragment {
 			}
 
 			@Override
-			protected void onBindViewHolder(@NonNull ParameterViewHolder viewHolder, int i, @NonNull Parameter parameter) {
+			protected void onBindViewHolder(@NonNull ParameterViewHolder viewHolder, int i, @NonNull final Parameter parameter) {
 				if (parameter.getParamTitle() != null) {
 					String title = capitalizeString(parameter.getParamTitle());
 					viewHolder.setTitle(title);
@@ -169,7 +170,7 @@ public class LogFragment extends Fragment {
 					viewHolder.editResults.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View v) {
-
+							editResults(mCurrentAquarium, parameter.getParamTitle());
 						}
 					});
 
@@ -183,7 +184,7 @@ public class LogFragment extends Fragment {
 									//setSafeRange();
 									return true;
 								case R.id.menu_edit_results:
-									//editResults();
+									editResults(mCurrentAquarium, parameter.getParamTitle());
 									return true;
 								case R.id.menu_remove_chart:
 									//removeChart();
@@ -213,6 +214,16 @@ public class LogFragment extends Fragment {
 		});
 
 		mRecyclerView.setAdapter(mFirebaseAdapter);
+	}
+
+	private void editResults(String aquarium, String parameter) {
+		LogFragmentDirections.ActionLogFragmentToEditListFragment action =
+				LogFragmentDirections.actionLogFragmentToEditListFragment();
+		action.setIdArg(aquarium);
+		action.setParamArg(parameter);
+
+		Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment)
+				.navigate(action);
 	}
 
 	private String capitalizeString(String string) {

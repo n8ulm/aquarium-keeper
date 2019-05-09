@@ -23,6 +23,7 @@ import com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragment;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.TaskFragment;
 import com.n8ulm.aquariumkeeper.data.User;
+import com.n8ulm.aquariumkeeper.ui.editList.EditListFragment;
 import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
 import com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment;
 import com.n8ulm.aquariumkeeper.ui.signin.SignInActivity;
@@ -48,7 +49,8 @@ public class MainActivity extends AppCompatActivity
 		DatePickerFragment.OnDateSelectedListener,
 		TaskFragment.OnFragmentInteractionListener,
 		AquariumsFragment.OnFragmentInteractionListener,
-        DashboardFragment.OnFragmentInteractionListener {
+        DashboardFragment.OnFragmentInteractionListener,
+		EditListFragment.OnFragmentInteractionListener {
 
 	private static final String TAG = "MainActivity";
 	public static final String ANONYMOUS = "anonymous";
