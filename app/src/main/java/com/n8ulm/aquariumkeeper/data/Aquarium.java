@@ -2,15 +2,17 @@ package com.n8ulm.aquariumkeeper.data;
 
 public class Aquarium {
 
+    private String id;
     private String title;
-    private int volume;
+    private String volume;
     private String unit;
     private String type;
 
     public Aquarium() {
     }
 
-    public Aquarium(String title, int volume, String unit, String type) {
+    public Aquarium(String id, String title, String volume, String unit, String type) {
+        this.id = id;
         this.title = title;
         this.volume = volume;
         this.unit = unit;
@@ -21,7 +23,7 @@ public class Aquarium {
         return title;
     }
 
-    public int getVolume() {
+    public String getVolume() {
         return volume;
     }
 
@@ -37,7 +39,7 @@ public class Aquarium {
         this.title = title;
     }
 
-    public void setVolume(int volume) {
+    public void setVolume(String volume) {
         this.volume = volume;
     }
 
@@ -47,5 +49,9 @@ public class Aquarium {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getID() {
+        return id;
     }
 }

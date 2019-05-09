@@ -29,6 +29,7 @@ import com.n8ulm.aquariumkeeper.ui.signin.SignInActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.preference.PreferenceManager;
 import android.util.Log;

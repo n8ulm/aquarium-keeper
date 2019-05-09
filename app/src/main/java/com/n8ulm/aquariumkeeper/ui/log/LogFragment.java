@@ -7,10 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.solver.widgets.Snapshot;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,19 +19,15 @@ import android.view.ViewGroup;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 
@@ -43,6 +36,8 @@ import java.util.List;
 
 
 public class LogFragment extends Fragment {
+
+	public static final String ID_ARG = "currentAquarium";
 
 	// Member variables.
 	private RecyclerView mRecyclerView;
@@ -58,9 +53,10 @@ public class LogFragment extends Fragment {
 		// Required empty public constructor
 	}
 
-	public static LogFragment newInstance(String param1, String param2) {
+	public static LogFragment newInstance(String currentAquarium) {
 		LogFragment fragment = new LogFragment();
 		Bundle args = new Bundle();
+		args.putString(ID_ARG, currentAquarium);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -69,6 +65,7 @@ public class LogFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
+
 		}
 
 	}
@@ -86,6 +83,8 @@ public class LogFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		mCurrentAquarium = LogFragmentArgs.fromBundle(getArguments()).getIdArg();
 
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.parameter_log_list);
 

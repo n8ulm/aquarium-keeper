@@ -11,6 +11,12 @@
         android:label="fragment_log"
         tools:layout="@layout/fragment_log" >
 
+        <argument
+            android:name="idArg"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="aquarium1" />
+
         <action
             android:id="@+id/action_logFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
@@ -29,9 +35,24 @@
         android:name="com.n8ulm.aquariumkeeper.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" >
+        <action android:id="@+id/action_dashboardFragment_to_logFragment"
+            app:destination="@id/logFragment">
+            <argument
+                android:name="idArg"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="aquarium1" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/aquariumsFragment"
+        android:name="com.n8ulm.aquariumkeeper.ui.aquarium.AquariumsFragment"
+        android:label="fragment_aquariums"
+        tools:layout="@layout/fragment_aquariums" >
         <action
-            android:id="@+id/action_dashboardFragment_to_logFragment"
-            app:destination="@id/logFragment" />
+            android:id="@+id/action_aquariumsFragment_to_logFragment"
+            app:destination="@id/logFragment">
+        </action>
     </fragment>
 
 </navigation>

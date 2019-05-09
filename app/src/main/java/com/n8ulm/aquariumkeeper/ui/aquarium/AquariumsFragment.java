@@ -8,10 +8,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.n8ulm.aquariumkeeper.DashboardFragmentDirections;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Aquarium;
+import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
 
 
 public class AquariumsFragment extends Fragment {
@@ -97,20 +100,30 @@ public class AquariumsFragment extends Fragment {
                         @Override
                         public Aquarium parseSnapshot(@NonNull DataSnapshot snapshot) {
                             String aquariumID = snapshot.getKey();
-                            String title = (String) snapshot.child(aquariumID).child("title").getValue();
-                            String type = (String) snapshot.child(aquariumID).child("title").getValue();
-                            int size = (int) snapshot.child(aquariumID).child("title").getValue();
+                            String title = (String) snapshot.child("title").getValue();
+                            String type = (String) snapshot.child("type").getValue();
+                            String size = (String) snapshot.child("size").getValue();
 
-                            return new Aquarium(title, size, "Liters", type);
+                            return new Aquarium(aquariumID, title, size, "Liters", type);
                         }
                     }).build();
 
         mFirebaseAdapter = new FirebaseRecyclerAdapter<Aquarium, AquariumViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull AquariumViewHolder aquariumViewHolder, int i, @NonNull Aquarium aquarium) {
+            protected void onBindViewHolder(@NonNull AquariumViewHolder aquariumViewHolder, int i, @NonNull final Aquarium aquarium) {
                 aquariumViewHolder.setTitle(aquarium.getTitle());
                 aquariumViewHolder.setType(aquarium.getType());
                 aquariumViewHolder.setVolume(aquarium.getVolume());
+                aquariumViewHolder.aqLogButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DashboardFragmentDirections.ActionDashboardFragmentToLogFragment action =
+                                DashboardFragmentDirections.actionDashboardFragmentToLogFragment();
+                        action.setIdArg(aquarium.getID());
+                        Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment)
+                                .navigate(action);
+                    }
+                });
             }
 
             @NonNull
