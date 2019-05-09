@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.n8ulm.aquariumkeeper.ui.aquarium.AquariumsFragment;
-import com.n8ulm.aquariumkeeper.DashboardFragment;
+import com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragment;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.TaskFragment;
 import com.n8ulm.aquariumkeeper.data.User;
@@ -29,17 +28,16 @@ import com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment;
 import com.n8ulm.aquariumkeeper.ui.signin.SignInActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.navigation.Navigation;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
+
 
 public class MainActivity extends AppCompatActivity
 		implements

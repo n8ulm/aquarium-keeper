@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -135,9 +138,11 @@ public class LogFragment extends Fragment {
 						.build();
 
 		mFirebaseAdapter = new FirebaseRecyclerAdapter<Parameter, ParameterViewHolder>(options) {
+			private Context mContext;
 			@NonNull
 			@Override
 			public ParameterViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+				mContext = viewGroup.getContext();
 				LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 				return new ParameterViewHolder(inflater.inflate(R.layout.list_item_parameter_log,
 						viewGroup, false));
@@ -160,6 +165,40 @@ public class LogFragment extends Fragment {
 					LineData lineData = new LineData(dataSet);
 					viewHolder.parameterChart.setData(lineData);
 					viewHolder.parameterChart.invalidate();
+
+					viewHolder.editResults.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+
+						}
+					});
+
+					final PopupMenu popupMenu = new PopupMenu(mContext, viewHolder.overflowMenu);
+					popupMenu.inflate(R.menu.popup_menu);
+					popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+							switch (item.getItemId()) {
+								case R.id.menu_set_saferange:
+									//setSafeRange();
+									return true;
+								case R.id.menu_edit_results:
+									//editResults();
+									return true;
+								case R.id.menu_remove_chart:
+									//removeChart();
+									return true;
+								default:
+									return true;
+							}
+						}
+					});
+					viewHolder.overflowMenu.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							popupMenu.show();
+						}
+					});
 				}
 			}
 		};

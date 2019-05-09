@@ -41,10 +41,17 @@
                 android:textColor="@color/colorBlack" />
 
             <Spinner
-                android:id="@+id/parameter_spinner"
+                android:id="@+id/aquarium_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/title_textView"
+                style="@style/AppTheme" />
+
+            <Spinner
+                android:id="@+id/parameter_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/aquarium_spinner"
                 style="@style/AppTheme" />
 
             <LinearLayout

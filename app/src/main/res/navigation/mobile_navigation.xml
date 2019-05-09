@@ -19,7 +19,11 @@
 
         <action
             android:id="@+id/action_logFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
@@ -28,15 +32,29 @@
         android:label="ResultInputFragment" >
         <action
             android:id="@+id/action_resultInputFragment_to_logFragment"
-            app:destination="@+id/logFragment"/>
+            app:destination="@+id/logFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <argument
+                android:name="idArg"
+                app:argType="string"
+                app:nullable="true"
+                android:defaultValue="aquarium1" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.n8ulm.aquariumkeeper.DashboardFragment"
+        android:name="com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action android:id="@+id/action_dashboardFragment_to_logFragment"
-            app:destination="@id/logFragment">
+            app:destination="@id/logFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
             <argument
                 android:name="idArg"
                 app:argType="string"
@@ -45,7 +63,11 @@
         </action>
         <action
             android:id="@+id/action_dashboardFragment_to_addAquariumFragment"
-            app:destination="@id/addAquariumFragment" />
+            app:destination="@id/addAquariumFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/aquariumsFragment"
@@ -54,8 +76,11 @@
         tools:layout="@layout/fragment_aquariums" >
         <action
             android:id="@+id/action_aquariumsFragment_to_logFragment"
-            app:destination="@id/logFragment">
-        </action>
+            app:destination="@id/logFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"></action>
     </fragment>
     <fragment
         android:id="@+id/addAquariumFragment"
@@ -64,7 +89,16 @@
         tools:layout="@layout/fragment_add_aquarium" >
         <action
             android:id="@+id/action_addAquariumFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
+    <fragment
+        android:id="@+id/editListFragment"
+        android:name="com.n8ulm.aquariumkeeper.EditListFragment"
+        android:label="fragment_edit_list"
+        tools:layout="@layout/fragment_edit_list" />
 
 </navigation>

@@ -1,4 +1,4 @@
-package com.n8ulm.aquariumkeeper;
+package com.n8ulm.aquariumkeeper.ui.dashboard;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

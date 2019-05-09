@@ -2,6 +2,8 @@ package com.n8ulm.aquariumkeeper.ui.log;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,8 @@ class ParameterViewHolder extends RecyclerView.ViewHolder {
 	TextView paramSafeRange;
 	LineChart parameterChart;
 	TextView paramLastResult;
+	Button editResults;
+	ImageButton overflowMenu;
 
 
 	public ParameterViewHolder(@NonNull View itemView) {
@@ -32,6 +36,8 @@ class ParameterViewHolder extends RecyclerView.ViewHolder {
 		paramSafeRange = itemView.findViewById(R.id.parameter_safe_range_textview);
 		parameterChart = itemView.findViewById(R.id.paramter_chart_view);
 		paramLastResult = itemView.findViewById(R.id.last_result_date_textview);
+		editResults = itemView.findViewById(R.id.edit_results);
+		overflowMenu = itemView.findViewById(R.id.set_safe_range);
 
 		parameterChart.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.colorLightPurpleHighlight));
 

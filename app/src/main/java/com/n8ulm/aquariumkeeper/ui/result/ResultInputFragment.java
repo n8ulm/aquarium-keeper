@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -25,14 +26,20 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 import com.n8ulm.aquariumkeeper.ui.DatePickerFragment;
+import com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragmentDirections;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -40,9 +47,9 @@ public class ResultInputFragment extends Fragment
 		implements AdapterView.OnItemSelectedListener,
 					DatePickerFragment.OnDateSelectedListener {
 
-	private static final String AQUARIUM_ARG = "currentAquarium";
+	private static final String AQUARIUM_ARG = "mCurrentAquarium";
 
-	private String currentAquarium = "aquarium1";
+	private String mCurrentAquarium = "aquarium1";
 
 
 	// Memeber Variable
@@ -53,11 +60,18 @@ public class ResultInputFragment extends Fragment
 	private ImageButton mDateButton;
 	private String mMSDate;
 
+	private Spinner paramSpinner;
+	private Spinner aquariumSpinner;
+
 	private Button mSaveResultButton;
 	private Button mViewLogButton;
 
-	private DatabaseReference mDatabaase;
+	private Map<String, String> mAquariumTitles;
+
+	private DatabaseReference mDatabase;
+	private DatabaseReference mAquariumRef;
 	private FirebaseUser mUser;
+
 
 	public ResultInputFragment() {
 		// Required empty public constructor
@@ -77,7 +91,7 @@ public class ResultInputFragment extends Fragment
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			currentAquarium = savedInstanceState.getString(AQUARIUM_ARG);
+			mCurrentAquarium = savedInstanceState.getString(AQUARIUM_ARG);
 		}
 	}
 
@@ -86,18 +100,56 @@ public class ResultInputFragment extends Fragment
 							 Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.fragment_result_input, container, false);
 
-		final Spinner spinner = (Spinner) view.findViewById(R.id.parameter_spinner);
-		if (spinner != null){
-			spinner.setOnItemSelectedListener(this);
+		mUser = FirebaseAuth.getInstance().getCurrentUser();
+		mDatabase = FirebaseDatabase.getInstance().getReference();
+		mAquariumRef = mDatabase.child("users").child(mUser.getUid()).child("aquariums");
+
+		paramSpinner = (Spinner) view.findViewById(R.id.parameter_spinner);
+		if (paramSpinner != null){
+			paramSpinner.setOnItemSelectedListener(this);
 		}
 
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+		ArrayAdapter<CharSequence> paramAdapter = ArrayAdapter.createFromResource(getActivity(),
 				R.array.parameters_array, R.layout.support_simple_spinner_dropdown_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		paramAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		if (spinner != null) {
-			spinner.setAdapter(adapter);
+		if (paramSpinner != null) {
+			paramSpinner.setAdapter(paramAdapter);
 		}
+
+		aquariumSpinner = (Spinner) view.findViewById(R.id.aquarium_spinner);
+
+		if (aquariumSpinner != null) {
+			aquariumSpinner.setOnItemSelectedListener(this);
+		}
+
+		final List<String> aquariums = new ArrayList<>();
+
+		mAquariumTitles = new HashMap<>();
+
+		mAquariumRef.addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				for (DataSnapshot aquariumsSnapshot : dataSnapshot.getChildren()) {
+					String aquariumName = (String) aquariumsSnapshot.child("title").getValue();
+					aquariums.add(aquariumName);
+					mAquariumTitles.put(aquariumName, (String) aquariumsSnapshot.getKey());
+				}
+
+				ArrayAdapter<String> aquariumsAdapter =
+						new ArrayAdapter<String>(getActivity(),
+								android.R.layout.simple_spinner_dropdown_item,
+								aquariums);
+				aquariumsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				aquariumSpinner.setAdapter(aquariumsAdapter);
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+
+			}
+		});
+
 
 		mTestDate = view.findViewById(R.id.result_date_input);
 
@@ -112,16 +164,13 @@ public class ResultInputFragment extends Fragment
 
 		updateDate(year, month, day);
 
-		mDatabaase = FirebaseDatabase.getInstance().getReference();
-		mUser = FirebaseAuth.getInstance().getCurrentUser();
-
 		mSaveResultButton = (Button) view.findViewById(R.id.save_result_button);
 		mSaveResultButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
 				if (!mTestResult.getText().equals("")) {
-					String title = spinner.getSelectedItem().toString().toLowerCase();
+					String title = paramSpinner.getSelectedItem().toString().toLowerCase();
 
 					writeNewResult(mUser.getUid(), title, mMSDate, new Double(String.valueOf(mTestResult.getText())));
 					Toast.makeText(getActivity(),
@@ -140,9 +189,10 @@ public class ResultInputFragment extends Fragment
 			@Override
 			public void onClick(View v) {
 
-				NavController navController =
-						Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment);
-				navController.navigate(R.id.action_dashboardFragment_to_logFragment);
+				DashboardFragmentDirections.ActionDashboardFragmentToLogFragment action =
+                        DashboardFragmentDirections.actionDashboardFragmentToLogFragment();
+				action.setIdArg(mCurrentAquarium);
+				Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment).navigate(action);
 			}
 		});
 
@@ -191,7 +241,7 @@ public class ResultInputFragment extends Fragment
 		childUpdates.put(date, result);
 
 
-		mDatabaase.child("users").child(uid).child("parameters").child(currentAquarium).child(title).child("results").updateChildren(childUpdates);
+		mDatabase.child("users").child(uid).child("parameters").child(mCurrentAquarium).child(title).child("results").updateChildren(childUpdates);
 
 	}
 
@@ -214,9 +264,11 @@ public class ResultInputFragment extends Fragment
 
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-		mUnitLabel.setText(Parameter.getUnits((String) parent.getItemAtPosition(position)));
-
+		if (parent.getId() == aquariumSpinner.getId()) {
+			mCurrentAquarium = mAquariumTitles.get(parent.getItemAtPosition(position));
+		} else if (parent.getId() == paramSpinner.getId()) {
+			mUnitLabel.setText(Parameter.getUnits((String) parent.getItemAtPosition(position)));
+		}
 	}
 
 	@Override

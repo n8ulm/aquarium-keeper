@@ -83,7 +83,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <TextView
-                    android:id="@+id/aquarium_size_title"
+                    android:id="@+id/aquarium_volume_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingEnd="10dp"
@@ -94,7 +94,7 @@
                     />
 
                 <EditText
-                    android:id="@+id/aquarium_size_input"
+                    android:id="@+id/aquarium_volume_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingEnd="10dp"
@@ -104,11 +104,38 @@
                     android:textColor="@color/colorBlack"
                     android:layout_weight="1" />
 
-                <Spinner
-                    android:id="@+id/unit_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
+            <Spinner
+                android:id="@+id/unit_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/aquarium_size_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                style="@style/AppTheme"/>
+
+            <LinearLayout
+                android:id="@+id/aq_button_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/unit_spinner"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <Button
+                    android:id="@+id/cancel_aquarium_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel"
+                    android:layout_marginEnd="2dp"/>
+
+                <Button
+                    android:id="@+id/save_aquarium_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Add Aquarium"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

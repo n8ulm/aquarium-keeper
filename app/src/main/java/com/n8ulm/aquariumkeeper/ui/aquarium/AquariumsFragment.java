@@ -27,10 +27,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.n8ulm.aquariumkeeper.DashboardFragmentDirections;
+
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Aquarium;
 import com.n8ulm.aquariumkeeper.ui.MainActivity;
+import com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragmentDirections;
 import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
 
 
