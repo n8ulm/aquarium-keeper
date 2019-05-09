@@ -9,13 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,7 +30,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 import com.n8ulm.aquariumkeeper.ui.DatePickerFragment;
-import com.n8ulm.aquariumkeeper.ui.MainActivity;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -95,7 +92,7 @@ public class ResultInputFragment extends Fragment
 		}
 
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-				R.array.labels_array, R.layout.support_simple_spinner_dropdown_item);
+				R.array.parameters_array, R.layout.support_simple_spinner_dropdown_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 		if (spinner != null) {

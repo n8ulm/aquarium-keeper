@@ -20,7 +20,7 @@
     <string name="add_tank">Add Tank</string>
     <string name="add_new_result">Add New Result</string>
 
-    <string-array name="labels_array">
+    <string-array name="parameters_array">
         <item>Ammonia</item>
         <item>Nitrite</item>
         <item>Nitrate</item>
@@ -34,6 +34,14 @@
         <item>Magnesium</item>
         <item>Iodine</item>
         <item>Strontium</item>
+    </string-array>
+
+    <string-array name="types_array">
+        <item>Fresh Water</item>
+        <item>Marine</item>
+        <item>Brackish</item>
+        <item>Pond</item>
+        <item>Cichlid</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
