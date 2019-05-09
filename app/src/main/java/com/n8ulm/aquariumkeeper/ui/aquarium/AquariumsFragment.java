@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +30,7 @@ import com.google.firebase.database.Query;
 import com.n8ulm.aquariumkeeper.DashboardFragmentDirections;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Aquarium;
+import com.n8ulm.aquariumkeeper.ui.MainActivity;
 import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
 
 

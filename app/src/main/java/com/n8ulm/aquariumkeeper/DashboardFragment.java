@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -81,6 +83,15 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final FloatingActionButton fab = view.findViewById(R.id.add_new_aquarium);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment)
+                        .navigate(R.id.action_dashboardFragment_to_addAquariumFragment);
+            }
+        });
+
         TabLayout tabLayout = view.findViewById(R.id.tab_layout);
 
         final ViewPager viewPager = view.findViewById(R.id.pager);
@@ -92,6 +103,16 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                switch (tab.getPosition()) {
+                    case 0:
+                        fab.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
+                        fab.setVisibility(View.INVISIBLE);
+                        break;
+                    default:
+                        fab.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -104,6 +125,7 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+
 
     }
 

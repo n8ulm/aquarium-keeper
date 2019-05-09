@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,12 +31,14 @@ import com.n8ulm.aquariumkeeper.ui.signin.SignInActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -56,8 +59,6 @@ public class MainActivity extends AppCompatActivity
 
 	private SharedPreferences mSharedPreferences;
 	private GoogleApiClient mGoogleApiClient;
-
-
 
 	// Firebase instance variables
 	private FirebaseAuth mFirebaseAuth;

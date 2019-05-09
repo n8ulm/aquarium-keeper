@@ -43,6 +43,9 @@
                 app:nullable="true"
                 android:defaultValue="aquarium1" />
         </action>
+        <action
+            android:id="@+id/action_dashboardFragment_to_addAquariumFragment"
+            app:destination="@id/addAquariumFragment" />
     </fragment>
     <fragment
         android:id="@+id/aquariumsFragment"
@@ -53,6 +56,15 @@
             android:id="@+id/action_aquariumsFragment_to_logFragment"
             app:destination="@id/logFragment">
         </action>
+    </fragment>
+    <fragment
+        android:id="@+id/addAquariumFragment"
+        android:name="com.n8ulm.aquariumkeeper.ui.aquarium.AddAquariumFragment"
+        android:label="fragment_add_aquarium"
+        tools:layout="@layout/fragment_add_aquarium" >
+        <action
+            android:id="@+id/action_addAquariumFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
     </fragment>
 
 </navigation>
