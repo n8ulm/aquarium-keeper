@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
- <com.google.android.material.card.MaterialCardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        style="@style/Widget.MaterialComponents.CardView"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:minHeight="150dp"
-        android:minWidth="300dp"
-        android:elevation="8dp"
-        android:theme="@style/Text"
-        app:cardBackgroundColor="@color/colorMaterialLight"
-        app:cardCornerRadius="4dp"
-        app:strokeColor="@color/colorMaterialGrey"
-        app:strokeWidth="1dp">
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.CardView"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:minHeight="150dp"
+    android:minWidth="300dp"
+    android:elevation="8dp"
+    android:theme="@style/Text"
+    app:cardBackgroundColor="@color/colorMaterialLight"
+    app:cardCornerRadius="4dp"
+    app:strokeColor="@color/colorMaterialGrey"
+    app:strokeWidth="1dp">
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,7 +25,7 @@
 
         <LinearLayout
             android:id="@+id/title_layout"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
             android:orientation="horizontal"
@@ -33,17 +33,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:elevation="4dp">
-
             <TextView
-                android:id="@+id/saferange_title"
+                android:id="@+id/title_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Set Safe Range"
-                android:textSize="25dp"
+                android:text="Parameter Result"
+                android:textSize="30dp"
                 android:textColor="@color/colorBlack"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"/>
         </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/result_data_layout"
@@ -56,32 +56,33 @@
             android:layout_marginEnd="16dp">
 
             <TextView
-                android:id="@+id/saferange_min"
+                android:id="@+id/test_result_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Min: "
+                android:text="Test Result"
                 android:textSize="18dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/colorBlack"/>
 
             <EditText
-                android:id="@+id/saferange_min_input"
-                android:layout_width="wrap_content"
+                android:id="@+id/result_input"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:inputType="numberDecimal"
                 android:paddingEnd="10dp"
                 android:text=""
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/min_unit_label"
+                android:id="@+id/unit_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:text="ppm (mg/L)"
                 android:textColor="@color/colorBlack"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/result_date_layout"
             android:layout_width="match_parent"
@@ -93,31 +94,32 @@
             android:layout_marginEnd="16dp">
 
             <TextView
-                android:id="@+id/saferange_max"
+                android:id="@+id/result_date_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="10dp"
-                android:text="Max: "
+                android:text="Test Date"
                 android:textSize="18dp"
                 android:textColor="@color/colorBlack"/>
 
             <EditText
-                android:id="@+id/saferange_max_input"
+                android:id="@+id/result_date_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="numberDecimal"
+                android:layout_weight="2"
+                android:inputType="date"
                 android:paddingEnd="10dp"
                 android:textSize="18dp" />
-            <TextView
-                android:id="@+id/max_unit_label"
+
+            <ImageButton
+                android:id="@+id/date_picker_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:text="ppm (mg/L)"
-                android:textColor="@color/colorBlack"/>
-
+                app:srcCompat="@drawable/ic_event_black_24dp"
+                android:theme="@style/AppTheme"
+                android:backgroundTint="@color/colorAccent"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/button_layout"
             android:layout_width="wrap_content"
@@ -130,20 +132,12 @@
             android:layout_marginTop="16dp">
 
             <Button
-                android:id="@+id/cancel_range_button"
+                android:id="@+id/save_result_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:text="Cancel" />
-
-            <Button
-                android:id="@+id/set_range_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Set Range" />
+                android:text="Add Result" />
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
-

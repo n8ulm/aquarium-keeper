@@ -10,6 +10,8 @@
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#232F34</color>
 
+    <color name="colorRemove">#E61860</color>
+
     <color name="colorLilac">#7200ca</color>
 
     <color name="colorLightPurple">#E1BEE7</color>

@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
+import com.n8ulm.aquariumkeeper.ui.dialog.AddResultDialog;
 import com.n8ulm.aquariumkeeper.ui.dialog.SafeRangeDialog;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class LogFragment extends Fragment {
 
 	// Member variables.
 	private RecyclerView mRecyclerView;
-	private DatabaseReference mFirebaseDatabaseReference;
+	private DatabaseReference mDatabase;
 	private FirebaseUser mFirebaseUser;
 	private FirebaseRecyclerAdapter<Parameter, ParameterViewHolder> mFirebaseAdapter;
 	private OnFragmentInteractionListener mListener;
@@ -97,7 +97,10 @@ public class LogFragment extends Fragment {
 
 		mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-		mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+		mDatabase = FirebaseDatabase.getInstance().getReference()
+				.child("users").child(mFirebaseUser.getUid())
+				.child("parameters")
+				.child(mCurrentAquarium);;
 
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 		fetch();
@@ -108,10 +111,7 @@ public class LogFragment extends Fragment {
 
 
 	private void fetch() {
-		Query query = mFirebaseDatabaseReference
-				.child("users").child(mFirebaseUser.getUid())
-				.child("parameters")
-				.child(mCurrentAquarium);
+		Query query = mDatabase;
 
 		FirebaseRecyclerOptions<Parameter> options =
 				new FirebaseRecyclerOptions.Builder<Parameter>()
@@ -155,7 +155,7 @@ public class LogFragment extends Fragment {
 			@Override
 			protected void onBindViewHolder(@NonNull ParameterViewHolder viewHolder, int i, @NonNull final Parameter parameter) {
 				if (parameter.getParamTitle() != null) {
-					String title = capitalizeString(parameter.getParamTitle());
+					String title = Parameter.capitalizeString(parameter.getParamTitle());
 					viewHolder.setTitle(title);
 					viewHolder.setLastResult(parameter.getParamDate(), parameter.getParamResult());
 					if (parameter.getParamSafeRange() != null) {
@@ -177,6 +177,13 @@ public class LogFragment extends Fragment {
 						}
 					});
 
+					viewHolder.addResult.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							addResult(mDatabase, parameter.getParamTitle());
+						}
+					});
+
 					final PopupMenu popupMenu = new PopupMenu(mContext, viewHolder.overflowMenu);
 					popupMenu.inflate(R.menu.popup_menu);
 					popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -184,13 +191,13 @@ public class LogFragment extends Fragment {
 						public boolean onMenuItemClick(MenuItem item) {
 							switch (item.getItemId()) {
 								case R.id.menu_set_saferange:
-									setSafeRange();
+									setSafeRange(mDatabase, parameter.getParamTitle());
 									return true;
 								case R.id.menu_edit_results:
 									editResults(mCurrentAquarium, parameter.getParamTitle());
 									return true;
 								case R.id.menu_remove_chart:
-									//removeChart();
+									removeChart();
 									return true;
 								default:
 									return true;
@@ -219,7 +226,10 @@ public class LogFragment extends Fragment {
 		mRecyclerView.setAdapter(mFirebaseAdapter);
 	}
 
-	private void setSafeRange() {
+	private void removeChart() {
+	}
+
+	private void addResult(DatabaseReference databaseReference, String paramTitle) {
 		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
 		if (prev != null) {
@@ -227,7 +237,19 @@ public class LogFragment extends Fragment {
 		}
 		fragmentTransaction.addToBackStack(null);
 
-		DialogFragment dialogFragment = new SafeRangeDialog();
+		DialogFragment dialogFragment = new AddResultDialog(databaseReference, paramTitle);
+		dialogFragment.show(fragmentTransaction, "dialog");
+	}
+
+	private void setSafeRange(DatabaseReference databaseReference, String title) {
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			fragmentTransaction.remove(prev);
+		}
+		fragmentTransaction.addToBackStack(null);
+
+		DialogFragment dialogFragment = new SafeRangeDialog(databaseReference, title);
 		dialogFragment.show(fragmentTransaction, "dialog");
 	}
 
@@ -239,20 +261,6 @@ public class LogFragment extends Fragment {
 
 		Navigation.findNavController(getActivity(), R.id.my_nav_host_fragment)
 				.navigate(action);
-	}
-
-	private String capitalizeString(String string) {
-		StringBuilder result = new StringBuilder(string);
-		result.replace(0,1, string.substring(0,1).toUpperCase());
-		result.replace(1, string.length(), string.substring(1, string.length()).toLowerCase());
-
-		if (string.contains(" ")) {
-			int index = string.indexOf(" ") + 1;
-
-			result.replace(index, index + 1, string.substring(index, index + 1).toUpperCase());
-		}
-
-		return result.toString();
 	}
 
 	private float toFloat(Object object) {

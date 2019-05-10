@@ -27,6 +27,7 @@ class ParameterViewHolder extends RecyclerView.ViewHolder {
 	LineChart parameterChart;
 	TextView paramLastResult;
 	Button editResults;
+	Button addResult;
 	ImageButton overflowMenu;
 
 
@@ -37,6 +38,7 @@ class ParameterViewHolder extends RecyclerView.ViewHolder {
 		parameterChart = itemView.findViewById(R.id.paramter_chart_view);
 		paramLastResult = itemView.findViewById(R.id.last_result_date_textview);
 		editResults = itemView.findViewById(R.id.edit_results);
+		addResult = itemView.findViewById(R.id.add_new_result);
 		overflowMenu = itemView.findViewById(R.id.set_safe_range);
 
 		parameterChart.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.colorLightPurpleHighlight));
