@@ -33,6 +33,7 @@ import com.google.firebase.database.Query;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Aquarium;
 import com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragmentDirections;
+import com.n8ulm.aquariumkeeper.ui.dialog.AquariumPropertiesDialog;
 import com.n8ulm.aquariumkeeper.ui.dialog.RemoveAquariumDialog;
 import com.n8ulm.aquariumkeeper.ui.dialog.RemoveChartDialog;
 
@@ -106,8 +107,9 @@ public class AquariumsFragment extends Fragment {
                             String title = (String) snapshot.child("title").getValue();
                             String type = (String) snapshot.child("type").getValue();
                             String size = (String) snapshot.child("size").getValue();
+                            String units = (String) snapshot.child("units").getValue();
 
-                            return new Aquarium(aquariumID, title, size, "Liters", type);
+                            return new Aquarium(aquariumID, title, size, "Liters", type, units);
                         }
                     }).build();
 
@@ -127,7 +129,7 @@ public class AquariumsFragment extends Fragment {
 
                 aquariumViewHolder.setTitle(aquarium.getTitle());
                 aquariumViewHolder.setType(aquarium.getType());
-                aquariumViewHolder.setVolume(aquarium.getVolume());
+                aquariumViewHolder.setVolume(aquarium.getVolume() + " " + aquarium.getUnit());
                 aquariumViewHolder.aqLogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -183,7 +185,14 @@ public class AquariumsFragment extends Fragment {
     }
 
     private void editProperties(DatabaseReference mDatabase, String id) {
-
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null){
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+        DialogFragment dialogFragment = new AquariumPropertiesDialog(mDatabase, id);
+        dialogFragment.show(fragmentTransaction, "dialog");
     }
 
     private void removeAquarium(DatabaseReference mDatabase, String id) {

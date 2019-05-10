@@ -5,17 +5,17 @@ public class Aquarium {
     private String id;
     private String title;
     private String volume;
-    private String unit;
+    private String units;
     private String type;
 
     public Aquarium() {
     }
 
-    public Aquarium(String id, String title, String volume, String unit, String type) {
+    public Aquarium(String id, String title, String volume, String unit, String type, String units) {
         this.id = id;
         this.title = title;
         this.volume = volume;
-        this.unit = unit;
+        this.units = units;
         this.type = type;
     }
 
@@ -28,7 +28,7 @@ public class Aquarium {
     }
 
     public String getUnit() {
-        return unit;
+        return units;
     }
 
     public String getType() {
@@ -44,7 +44,7 @@ public class Aquarium {
     }
 
     public void setUnit(String unit) {
-        this.unit = unit;
+        this.units = unit;
     }
 
     public void setType(String type) {

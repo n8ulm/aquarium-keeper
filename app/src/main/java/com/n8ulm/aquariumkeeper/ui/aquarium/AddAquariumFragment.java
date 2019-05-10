@@ -110,7 +110,7 @@ public class AddAquariumFragment extends Fragment
             unitSpinner.setOnItemSelectedListener(this);
         }
 
-        ArrayAdapter<CharSequence> unitAdapter = ArrayAdapter.createFromResource(getActivity(),
+        final ArrayAdapter<CharSequence> unitAdapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.units_array, R.layout.support_simple_spinner_dropdown_item);
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -123,9 +123,10 @@ public class AddAquariumFragment extends Fragment
         mAddAquariumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writeAquarium(mAquariumVolume.getText().toString() + " " + unitSpinner.getSelectedItem().toString(),
+                writeAquarium(mAquariumVolume.getText().toString(),
                         mAquariumTitle.getText().toString(),
-                        typeSpinner.getSelectedItem().toString());
+                        typeSpinner.getSelectedItem().toString(),
+                        unitSpinner.getSelectedItem().toString());
             }
         });
 
@@ -144,11 +145,12 @@ public class AddAquariumFragment extends Fragment
 
     }
 
-    private void writeAquarium(String volume, String title, String type) {
+    private void writeAquarium(String volume, String title, String type, String units) {
         Map<String, Object> childdUpdates = new HashMap<>();
         childdUpdates.put("size", volume);
         childdUpdates.put("title", title);
         childdUpdates.put("type", type);
+        childdUpdates.put("units", units);
 
         mDatabase.child("users")
                 .child(mUser.getUid())
