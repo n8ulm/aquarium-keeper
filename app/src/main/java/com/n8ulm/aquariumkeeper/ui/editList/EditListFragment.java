@@ -138,7 +138,7 @@ public class EditListFragment extends Fragment {
                     results.add(String.valueOf(child.getValue()));
                 }
 
-                mAdapter = new ParamListAdapter(dates, results);
+                mAdapter = new ParamListAdapter(dates, results, mDatabase);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
@@ -165,6 +165,14 @@ public class EditListFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    public void update(String key, String value) {
+        mDatabase.child(key).setValue(value);
+    }
+
+    public void remove(String key) {
+        mDatabase.child(key).removeValue();
     }
 
     @Override

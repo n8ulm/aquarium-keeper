@@ -25,41 +25,56 @@
             xmlns:tools="http://schemas.android.com/tools"
 
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp"
-            android:theme="@style/Text">
+            android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/title_textView"
-                android:layout_width="wrap_content"
+            android:theme="@style/Text"
+            android:paddingBottom="8dp">
+
+            <LinearLayout
+                android:id="@+id/title_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add Results"
-                android:textSize="30dp"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/colorBlack" />
+                android:elevation="4dp">
+                <TextView
+                    android:id="@+id/title_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Results"
+                    android:textSize="30dp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"/>
+            </LinearLayout>
 
             <Spinner
                 android:id="@+id/aquarium_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/title_textView"
-                style="@style/AppTheme" />
+                app:layout_constraintTop_toBottomOf="@id/title_layout"
+                style="@style/AppTheme"
+                android:layout_marginStart="16dp"/>
 
             <Spinner
                 android:id="@+id/parameter_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/aquarium_spinner"
-                style="@style/AppTheme" />
+                style="@style/AppTheme"
+                android:layout_marginStart="16dp"/>
 
             <LinearLayout
                 android:id="@+id/result_data_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/parameter_spinner">
+                app:layout_constraintTop_toBottomOf="@id/parameter_spinner"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
 
                 <TextView
                     android:id="@+id/test_result_title"
@@ -95,7 +110,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/result_data_layout"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
 
                 <TextView
                     android:id="@+id/result_date_title"
@@ -120,7 +137,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_event_black_24dp"
-                    android:theme="@style/AppTheme"/>
+                    android:theme="@style/AppTheme"
+                    android:backgroundTint="@color/colorAccent"/>
             </LinearLayout>
 
             <LinearLayout
@@ -129,14 +147,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/result_date_layout"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp">
 
                 <Button
                     android:id="@+id/view_log_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="2dp"
+                    android:layout_marginEnd="8dp"
                     android:text="View Log" />
 
                 <Button

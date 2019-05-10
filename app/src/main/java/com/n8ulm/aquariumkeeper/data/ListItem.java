@@ -32,4 +32,6 @@ public class ListItem {
     public void setResults(List<String> results) {
         this.results = results;
     }
+
+
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="12dp"
-    android:minHeight="350dp"
+    android:minHeight="300dp"
     android:elevation="8dp"
     android:theme="@style/Text"
     app:cardBackgroundColor="@color/colorMaterialLight"
@@ -17,18 +17,19 @@
         android:id="@+id/aquarium_view_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="350dp">
+        android:minHeight="300dp">
 
 
         <ImageView
             android:id="@+id/aquarium_image"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@color/design_default_color_secondary"/>
+            app:srcCompat="@color/design_default_color_secondary"
+            android:elevation="4dp"/>
 
         <TextView
             android:id="@+id/aquarium_title_textview"
@@ -90,6 +91,21 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="2dp"/>
+
+        <ImageButton
+            android:id="@+id/set_safe_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_more_vert_black_24dp"
+            android:theme="@style/PrimaryFlatButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="8dp"
+            android:background="@null"
+            android:clickable="true"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
