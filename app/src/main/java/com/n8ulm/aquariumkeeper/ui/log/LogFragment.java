@@ -7,7 +7,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
+import com.n8ulm.aquariumkeeper.ui.dialog.SafeRangeDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,7 +184,7 @@ public class LogFragment extends Fragment {
 						public boolean onMenuItemClick(MenuItem item) {
 							switch (item.getItemId()) {
 								case R.id.menu_set_saferange:
-									//setSafeRange();
+									setSafeRange();
 									return true;
 								case R.id.menu_edit_results:
 									editResults(mCurrentAquarium, parameter.getParamTitle());
@@ -214,6 +217,18 @@ public class LogFragment extends Fragment {
 		});
 
 		mRecyclerView.setAdapter(mFirebaseAdapter);
+	}
+
+	private void setSafeRange() {
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		if (prev != null) {
+			fragmentTransaction.remove(prev);
+		}
+		fragmentTransaction.addToBackStack(null);
+
+		DialogFragment dialogFragment = new SafeRangeDialog();
+		dialogFragment.show(fragmentTransaction, "dialog");
 	}
 
 	private void editResults(String aquarium, String parameter) {
