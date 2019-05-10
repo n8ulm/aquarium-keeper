@@ -27,32 +27,45 @@
             android:id="@+id/constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
+            android:paddingBottom="8dp"
             tools:context=".ui.aquarium.AddAquariumFragment">
-
-            <TextView
-                android:id="@+id/add_aq_title_textView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/add_aq_title_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add Aquarium"
-                android:textSize="30sp"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:textColor="@color/colorBlack" />
+                android:elevation="4dp">
+                <TextView
+                    android:id="@+id/add_aq_title_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Aquarium"
+                    android:textSize="30sp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"/>
+            </LinearLayout>
             <Spinner
                 android:id="@+id/type_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/add_aq_title_textView"
-                style="@style/AppTheme"/>
+                app:layout_constraintTop_toBottomOf="@id/add_aq_title_layout"
+                style="@style/AppTheme"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"/>
 
             <LinearLayout
                 android:id="@+id/aquarium_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/type_spinner">
+                app:layout_constraintTop_toBottomOf="@id/type_spinner"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
 
                 <TextView
                     android:id="@+id/aquarium_title_view"
@@ -80,7 +93,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/aquarium_title_layout"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
 
                 <TextView
                     android:id="@+id/aquarium_volume_title"
@@ -112,7 +127,9 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/aquarium_size_layout"
                 app:layout_constraintStart_toStartOf="parent"
-                style="@style/AppTheme"/>
+                style="@style/AppTheme"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"/>
 
             <LinearLayout
                 android:id="@+id/aq_button_layout"
@@ -120,7 +137,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/unit_spinner"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp">
 
                 <Button
                     android:id="@+id/cancel_aquarium_button"
@@ -128,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Cancel"
-                    android:layout_marginEnd="2dp"/>
+                    android:layout_marginEnd="8dp"/>
 
                 <Button
                     android:id="@+id/save_aquarium_button"

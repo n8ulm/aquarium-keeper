@@ -123,7 +123,7 @@ public class AddAquariumFragment extends Fragment
         mAddAquariumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writeAquarium(mAquariumVolume.getText().toString(),
+                writeAquarium(mAquariumVolume.getText().toString() + " " + unitSpinner.getSelectedItem().toString(),
                         mAquariumTitle.getText().toString(),
                         typeSpinner.getSelectedItem().toString());
             }

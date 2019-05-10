@@ -28,20 +28,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@color/design_default_color_secondary"
+            app:srcCompat="@drawable/reef"
             android:elevation="4dp"/>
 
-        <TextView
-            android:id="@+id/aquarium_title_textview"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/aquarium_title_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My Aquarium"
-            android:textSize="26dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:theme="@style/TitleText"
+            android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/aquarium_image"/>
+            app:layout_constraintTop_toBottomOf="@id/aquarium_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/colorAccent"
+            android:elevation="4dp"
+            android:layout_marginBottom="8dp">
+            <TextView
+                android:id="@+id/aquarium_title_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Aquarium"
+                android:textSize="26dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:theme="@style/TitleText"
+                />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/type_textview"
@@ -51,8 +63,9 @@
             android:textSize="18dp"
             android:layout_marginTop="6dp"
             android:layout_marginStart="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/aquarium_title_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aquarium_title_textview"/>
+            />
 
 
         <TextView
