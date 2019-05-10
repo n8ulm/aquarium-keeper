@@ -1,7 +1,6 @@
 package com.n8ulm.aquariumkeeper.ui.dialog;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 
-public class RemoveChartDialog extends DialogFragment {
+public class RemoveAquariumDialog extends DialogFragment {
 
     private DatabaseReference mDatabase;
-    private String mChart;
+    private String mAquarium;
     private Button mCancel;
     private Button mRemove;
 
-    public RemoveChartDialog(DatabaseReference databaseReference, String chart){
+    public RemoveAquariumDialog(DatabaseReference databaseReference, String aquarium){
         this.mDatabase = databaseReference;
-        this.mChart = chart;
+        this.mAquarium = aquarium;
     }
 
     @Override
@@ -37,7 +36,7 @@ public class RemoveChartDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_removechart, container, false);
+        return inflater.inflate(R.layout.dialog_removeaquarium, container, false);
 
     }
 
@@ -58,11 +57,12 @@ public class RemoveChartDialog extends DialogFragment {
         mRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabase.child(mChart).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                mDatabase.child("aquariums").child(mAquarium).removeValue();
+                mDatabase.child("parameters").child(mAquarium).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getContext(),
-                                Parameter.capitalizeString(mChart) + " Chart Removed",
+                                 "Aquarium Removed",
                                 Toast.LENGTH_LONG).show();
                         dismiss();
                     }
@@ -71,3 +71,4 @@ public class RemoveChartDialog extends DialogFragment {
         });
     }
 }
+

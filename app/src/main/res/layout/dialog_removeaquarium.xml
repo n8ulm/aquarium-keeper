@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -36,10 +35,10 @@
             android:elevation="4dp">
 
             <TextView
-                android:id="@+id/saferange_title"
+                android:id="@+id/remove_aquarium_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Set Safe Range"
+                android:text="Remove Aquarium"
                 android:textSize="25dp"
                 android:textColor="@color/colorBlack"
                 android:layout_marginStart="16dp"
@@ -55,14 +54,14 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp">
-        <TextView
-            android:id="@+id/confirmmation_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Removing chart will delete all stored results!"
-            android:textSize="18dp"
-            android:paddingEnd="10dp"
-            android:textColor="@color/colorBlack"/>
+            <TextView
+                android:id="@+id/confirmmation_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Removing aquarium will delete all properties and log data!"
+                android:textSize="18dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/colorBlack"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/button_layout"

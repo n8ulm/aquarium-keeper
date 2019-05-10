@@ -7,20 +7,22 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,9 +32,9 @@ import com.google.firebase.database.Query;
 
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Aquarium;
-import com.n8ulm.aquariumkeeper.ui.MainActivity;
 import com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragmentDirections;
-import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
+import com.n8ulm.aquariumkeeper.ui.dialog.RemoveAquariumDialog;
+import com.n8ulm.aquariumkeeper.ui.dialog.RemoveChartDialog;
 
 
 public class AquariumsFragment extends Fragment {
@@ -46,7 +48,7 @@ public class AquariumsFragment extends Fragment {
 
     // Member variables.
     private RecyclerView mRecyclerView;
-    private DatabaseReference mFirebaseDatabaseReference;
+    private DatabaseReference mDatabase;
     private FirebaseUser mFirebaseUser;
     private FirebaseRecyclerAdapter<Aquarium, AquariumViewHolder> mFirebaseAdapter;
     private OnFragmentInteractionListener mListener;
@@ -86,15 +88,13 @@ public class AquariumsFragment extends Fragment {
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.aquarium_list);
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFirebaseUser.getUid());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         fetch();
     }
 
     private void fetch() {
-        Query query = mFirebaseDatabaseReference
-                .child("users").child(mFirebaseUser.getUid())
-                .child("aquariums");
+        Query query = mDatabase.child("aquariums");
 
         FirebaseRecyclerOptions<Aquarium> options =
                 new FirebaseRecyclerOptions.Builder<Aquarium>()
@@ -112,8 +112,19 @@ public class AquariumsFragment extends Fragment {
                     }).build();
 
         mFirebaseAdapter = new FirebaseRecyclerAdapter<Aquarium, AquariumViewHolder>(options) {
+            private Context mContext;
+            @NonNull
+            @Override
+            public AquariumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                mContext = parent.getContext();
+                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+                return new AquariumViewHolder(inflater.inflate(R.layout.list_item_aquarium,
+                        parent, false));
+            }
+
             @Override
             protected void onBindViewHolder(@NonNull AquariumViewHolder aquariumViewHolder, int i, @NonNull final Aquarium aquarium) {
+
                 aquariumViewHolder.setTitle(aquarium.getTitle());
                 aquariumViewHolder.setType(aquarium.getType());
                 aquariumViewHolder.setVolume(aquarium.getVolume());
@@ -127,15 +138,37 @@ public class AquariumsFragment extends Fragment {
                                 .navigate(action);
                     }
                 });
+
+                aquariumViewHolder.aqProperties.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editProperties(mDatabase, aquarium.getID());
+                    }
+                });
+
+                final PopupMenu popupMenu = new PopupMenu(mContext, aquariumViewHolder.aqOverflow);
+                popupMenu.inflate(R.menu.properties_menu);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu_remove_aquarium:
+                                removeAquarium(mDatabase, aquarium.getID());
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }
+                });
+                aquariumViewHolder.aqOverflow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        popupMenu.show();
+                    }
+                });
             }
 
-            @NonNull
-            @Override
-            public AquariumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-                return new AquariumViewHolder(inflater.inflate(R.layout.list_item_aquarium,
-                        parent, false));
-            }
+
         };
 
         mFirebaseAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
@@ -147,6 +180,21 @@ public class AquariumsFragment extends Fragment {
         });
 
         mRecyclerView.setAdapter(mFirebaseAdapter);
+    }
+
+    private void editProperties(DatabaseReference mDatabase, String id) {
+
+    }
+
+    private void removeAquarium(DatabaseReference mDatabase, String id) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null){
+            fragmentTransaction.remove(prev);
+        }
+        fragmentTransaction.addToBackStack(null);
+        DialogFragment dialogFragment = new RemoveAquariumDialog(mDatabase, id);
+        dialogFragment.show(fragmentTransaction, "dialog");
     }
 
     // TODO: Rename method, update argument and hook method into UI event

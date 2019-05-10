@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -36,6 +37,7 @@ import com.google.firebase.database.Query;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.data.Parameter;
 import com.n8ulm.aquariumkeeper.ui.dialog.AddResultDialog;
+import com.n8ulm.aquariumkeeper.ui.dialog.RemoveChartDialog;
 import com.n8ulm.aquariumkeeper.ui.dialog.SafeRangeDialog;
 
 import java.util.ArrayList;
@@ -197,7 +199,7 @@ public class LogFragment extends Fragment {
 									editResults(mCurrentAquarium, parameter.getParamTitle());
 									return true;
 								case R.id.menu_remove_chart:
-									removeChart();
+									removeChart(mDatabase, parameter.getParamTitle());
 									return true;
 								default:
 									return true;
@@ -226,7 +228,15 @@ public class LogFragment extends Fragment {
 		mRecyclerView.setAdapter(mFirebaseAdapter);
 	}
 
-	private void removeChart() {
+	private void removeChart(DatabaseReference databaseReference, String title) {
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+		if (prev != null){
+			fragmentTransaction.remove(prev);
+		}
+		fragmentTransaction.addToBackStack(null);
+		DialogFragment dialogFragment = new RemoveChartDialog(databaseReference, title);
+		dialogFragment.show(fragmentTransaction, "dialog");
 	}
 
 	private void addResult(DatabaseReference databaseReference, String paramTitle) {

@@ -2,6 +2,7 @@ package com.n8ulm.aquariumkeeper.ui.aquarium;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,8 @@ class AquariumViewHolder extends RecyclerView.ViewHolder {
     TextView aqType;
     TextView aqVolume;
     Button aqLogButton;
+    Button aqProperties;
+    ImageButton aqOverflow;
 
     public AquariumViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -24,6 +27,8 @@ class AquariumViewHolder extends RecyclerView.ViewHolder {
         aqType = itemView.findViewById(R.id.type_textview);
         aqVolume = itemView.findViewById(R.id.size_textview);
         aqLogButton = itemView.findViewById(R.id.view_aqurium_log);
+        aqProperties = itemView.findViewById(R.id.edit_aqurium_button);
+        aqOverflow = itemView.findViewById(R.id.aq_overflow);
     }
 
 
