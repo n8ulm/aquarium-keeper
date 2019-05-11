@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -51,6 +52,7 @@ public class SignInActivity extends AppCompatActivity implements
 
 	private SignInButton mGoogleSignInButton;
 	private LoginButton mFacebookSignInButton;
+	private Button mDemoButton;
 
 	private GoogleApiClient mGoogleApiClient;
 
@@ -74,6 +76,7 @@ public class SignInActivity extends AppCompatActivity implements
 		// Assign Fields
 		mGoogleSignInButton = findViewById(R.id.google_sign_in_button);
 		mFacebookSignInButton = (LoginButton) findViewById(R.id.facebook_sign_in_button);
+
 
 		mFacebookSignInButton.setReadPermissions(Arrays.asList(EMAIL));
 		

@@ -38,7 +38,7 @@
                 android:id="@+id/saferange_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Set Safe Range"
+                android:text="Set Demo Data"
                 android:textSize="25dp"
                 android:textColor="@color/colorBlack"
                 android:layout_marginStart="16dp"
@@ -54,14 +54,14 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp">
-        <TextView
-            android:id="@+id/confirmmation_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Removing chart will delete all stored results!"
-            android:textSize="18dp"
-            android:paddingEnd="10dp"
-            android:textColor="@color/colorBlack"/>
+            <TextView
+                android:id="@+id/confirmmation_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Setting demo data will remove all current data!"
+                android:textSize="18dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/colorBlack"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/button_layout"
@@ -75,7 +75,7 @@
             android:layout_marginTop="16dp">
 
             <Button
-                android:id="@+id/cancel_remove_button"
+                android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -84,11 +84,11 @@
                 android:backgroundTint="@color/colorLilac"/>
 
             <Button
-                android:id="@+id/remove_button"
+                android:id="@+id/add_data_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Remove"
+                android:text="Set Demo Data"
                 android:backgroundTint="@color/colorRemove"/>
         </LinearLayout>
 

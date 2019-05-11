@@ -126,7 +126,29 @@ public class AquariumsFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(@NonNull AquariumViewHolder aquariumViewHolder, int i, @NonNull final Aquarium aquarium) {
-
+                if (aquarium.getImageUrl() == null) {
+                    int imageRef;
+                    switch (aquarium.getType()){
+                        case "Marine":
+                            imageRef = R.drawable.saltwater;
+                            break;
+                        case "Brackish":
+                            imageRef = R.drawable.brackish;
+                            break;
+                        case "Pond":
+                            imageRef = R.drawable.pond;
+                            break;
+                        case "Cichlid":
+                            imageRef = R.drawable.reef;
+                            break;
+                        case "Fresh Water":
+                            imageRef = R.drawable.freshwater;
+                            break;
+                        default:
+                            imageRef = R.drawable.saltwater;
+                    }
+                    aquariumViewHolder.aqImage.setImageResource(imageRef);
+                }
                 aquariumViewHolder.setTitle(aquarium.getTitle());
                 aquariumViewHolder.setType(aquarium.getType());
                 aquariumViewHolder.setVolume(aquarium.getVolume() + " " + aquarium.getUnit());

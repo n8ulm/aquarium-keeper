@@ -14,8 +14,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.n8ulm.aquariumkeeper.ui.aquarium.AquariumsFragment;
@@ -29,7 +32,6 @@ import com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment;
 import com.n8ulm.aquariumkeeper.ui.signin.SignInActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity
 	// Firebase instance variables
 	private FirebaseAuth mFirebaseAuth;
 	private FirebaseUser mFirebaseUser;
-	private DatabaseReference mFirebaseDatabaseReference;
+	private DatabaseReference mDatabase;
 	private FirebaseRemoteConfig mFirebaseRemoteConfig;
 	private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity
 
 		mFirebaseAuth = FirebaseAuth.getInstance();
 		mFirebaseUser = mFirebaseAuth.getCurrentUser();
-		mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+		mDatabase = FirebaseDatabase.getInstance().getReference();
 
 		if (mFirebaseUser == null) {
 			// Not signed in, launch the Sign In activity
@@ -130,12 +132,30 @@ public class MainActivity extends AppCompatActivity
 					startActivity(new Intent(this, SignInActivity.class));
 					finish();
 					return true;
+				case R.id.demo_menu:
+					setDemoData();
+					return true;
 				default:
 					return super.onOptionsItemSelected(item);
 			}
 		}
 
-		private void causeCrash () {
+	private void setDemoData() {
+		mDatabase.child("demo").addListenerForSingleValueEvent(new ValueEventListener() {
+			@Override
+			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+				mDatabase.child(mFirebaseUser.getUid()).setValue(dataSnapshot);
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+
+			}
+		});
+
+	}
+
+	private void causeCrash () {
 			throw new NullPointerException("Fake Null Pointer Exception");
 		}
 
@@ -183,7 +203,7 @@ public class MainActivity extends AppCompatActivity
 	private void writeNewUser(String userId, String name, String email) {
 		User user = new User(name, email);
 
-		mFirebaseDatabaseReference.child("users").child(userId).child("user").setValue(user);
+		mDatabase.child("users").child(userId).child("user").setValue(user);
 		Log.d(TAG, "wrote new user to firebase database");
 	}
 

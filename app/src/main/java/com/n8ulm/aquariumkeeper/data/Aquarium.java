@@ -7,6 +7,7 @@ public class Aquarium {
     private String volume;
     private String units;
     private String type;
+    private String imageUrl;
 
     public Aquarium() {
     }
@@ -54,4 +55,8 @@ public class Aquarium {
     public String getID() {
         return id;
     }
+
+    public String getImageUrl() { return imageUrl; }
+
+    public void setImageUrl(String url) { this.imageUrl = url; }
 }
