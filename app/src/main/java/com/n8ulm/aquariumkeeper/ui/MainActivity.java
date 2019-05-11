@@ -26,15 +26,20 @@ import com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragment;
 import com.n8ulm.aquariumkeeper.R;
 import com.n8ulm.aquariumkeeper.TaskFragment;
 import com.n8ulm.aquariumkeeper.data.User;
+import com.n8ulm.aquariumkeeper.ui.dialog.DemoDataDialog;
+import com.n8ulm.aquariumkeeper.ui.dialog.RemoveChartDialog;
 import com.n8ulm.aquariumkeeper.ui.editList.EditListFragment;
 import com.n8ulm.aquariumkeeper.ui.log.LogFragment;
 import com.n8ulm.aquariumkeeper.ui.result.ResultInputFragment;
 import com.n8ulm.aquariumkeeper.ui.signin.SignInActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -133,26 +138,22 @@ public class MainActivity extends AppCompatActivity
 					finish();
 					return true;
 				case R.id.demo_menu:
-					setDemoData();
+					setDemoData(mDatabase, mFirebaseUser.getUid());
 					return true;
 				default:
 					return super.onOptionsItemSelected(item);
 			}
 		}
 
-	private void setDemoData() {
-		mDatabase.child("demo").addListenerForSingleValueEvent(new ValueEventListener() {
-			@Override
-			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-				mDatabase.child(mFirebaseUser.getUid()).setValue(dataSnapshot);
-			}
-
-			@Override
-			public void onCancelled(@NonNull DatabaseError databaseError) {
-
-			}
-		});
-
+	private void setDemoData(DatabaseReference reference, String user) {
+		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+		Fragment prev = getSupportFragmentManager().findFragmentByTag("dialog");
+		if (prev != null){
+			fragmentTransaction.remove(prev);
+		}
+		fragmentTransaction.addToBackStack(null);
+		DialogFragment dialogFragment = new DemoDataDialog(reference, user);
+		dialogFragment.show(fragmentTransaction, "dialog");
 	}
 
 	private void causeCrash () {

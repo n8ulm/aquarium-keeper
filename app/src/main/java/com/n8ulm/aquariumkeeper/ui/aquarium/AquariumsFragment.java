@@ -18,7 +18,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -35,7 +37,6 @@ import com.n8ulm.aquariumkeeper.data.Aquarium;
 import com.n8ulm.aquariumkeeper.ui.dashboard.DashboardFragmentDirections;
 import com.n8ulm.aquariumkeeper.ui.dialog.AquariumPropertiesDialog;
 import com.n8ulm.aquariumkeeper.ui.dialog.RemoveAquariumDialog;
-import com.n8ulm.aquariumkeeper.ui.dialog.RemoveChartDialog;
 
 
 public class AquariumsFragment extends Fragment {
@@ -53,6 +54,10 @@ public class AquariumsFragment extends Fragment {
     private FirebaseUser mFirebaseUser;
     private FirebaseRecyclerAdapter<Aquarium, AquariumViewHolder> mFirebaseAdapter;
     private OnFragmentInteractionListener mListener;
+
+    private TextView mNoAquariums;
+    private TextView mNoAqMessage;
+    private ImageView mNoAqImg;
 
     public AquariumsFragment() {
         // Required empty public constructor
@@ -91,6 +96,11 @@ public class AquariumsFragment extends Fragment {
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(mFirebaseUser.getUid());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mNoAquariums = view.findViewById(R.id.aq_not_added);
+        mNoAqMessage = view.findViewById(R.id.aq_not_add_note);
+        mNoAqImg = view.findViewById(R.id.aq_not_added_ic);
+
         fetch();
     }
 
@@ -200,10 +210,22 @@ public class AquariumsFragment extends Fragment {
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
                 int aquariumCount = mFirebaseAdapter.getItemCount();
+
+                if(aquariumCount != 0) {
+                    mNoAquariums.setVisibility(View.GONE);
+                    mNoAqImg.setVisibility(View.GONE);
+                    mNoAqMessage.setVisibility(View.GONE);
+                } else {
+                    mNoAquariums.setVisibility(View.VISIBLE);
+                    mNoAqImg.setVisibility(View.VISIBLE);
+                    mNoAqMessage.setVisibility(View.VISIBLE);
+                }
             }
         });
 
         mRecyclerView.setAdapter(mFirebaseAdapter);
+
+
     }
 
     private void editProperties(DatabaseReference mDatabase, String id) {
