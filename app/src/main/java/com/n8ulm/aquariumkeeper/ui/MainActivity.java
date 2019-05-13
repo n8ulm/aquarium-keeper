@@ -74,9 +74,6 @@ public class MainActivity extends AppCompatActivity
 	private FirebaseRemoteConfig mFirebaseRemoteConfig;
 	private FirebaseAnalytics mFirebaseAnalytics;
 
-	//private AdView mAdView;
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

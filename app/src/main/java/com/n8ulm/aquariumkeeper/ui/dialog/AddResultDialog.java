@@ -106,11 +106,11 @@ public class AddResultDialog extends DialogFragment
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(date, result);
 
-        mDatabase.child(mTitle).child("results").updateChildren(childUpdates)
+        mDatabase.child(mTitle.toLowerCase()).child("results").updateChildren(childUpdates)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getActivity(),
+                Toast.makeText(getContext(),
                         "Result Added", Toast.LENGTH_LONG).show();
                 dismiss();
             }

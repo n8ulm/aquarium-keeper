@@ -13,9 +13,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -61,9 +58,6 @@ public class SignInActivity extends AppCompatActivity implements
 	// Firebase instance variables
 	private FirebaseAuth mFirebaseAuth;
 	private DatabaseReference mDatabase;
-
-	// AdMob
-	private AdView mAdView;
 
 
 	@Override
@@ -115,20 +109,6 @@ public class SignInActivity extends AppCompatActivity implements
 		// Initialize FirebaseAuth
 		mFirebaseAuth = FirebaseAuth.getInstance();
 
-
-		//TODO Configure Ads for publishing, remove test devices
-		//adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
-		// Init AdView
-		MobileAds.initialize(this, getString(R.string.ad_mob_app_id));
-
-		AdRequest adRequest = new AdRequest.Builder()
-				.addTestDevice("E19E8ABD7B419C86693F16D4DB4F306A")
-				.build();
-
-		adRequest.isTestDevice(this);
-
-		mAdView = findViewById(R.id.signInAdView);
-		mAdView.loadAd(adRequest);
 
 		mDatabase = FirebaseDatabase.getInstance().getReference();
 
