@@ -25,6 +25,7 @@ import android.widget.PopupMenu;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -167,9 +168,10 @@ public class LogFragment extends Fragment {
 					}
 
 
-					LineDataSet dataSet = new LineDataSet(parameter.getResults(), "Label");
+					LineDataSet dataSet = new LineDataSet(parameter.getResults(), Parameter.capitalizeString(parameter.getParamTitle()));
 					LineData lineData = new LineData(dataSet);
 					viewHolder.parameterChart.setData(lineData);
+					viewHolder.parameterChart.setDescription(null);
 					viewHolder.parameterChart.invalidate();
 
 					viewHolder.editResults.setOnClickListener(new View.OnClickListener() {

@@ -47,13 +47,15 @@ class ParameterViewHolder extends RecyclerView.ViewHolder {
 		xAxis.setValueFormatter(new ValueFormatter() {
 			@Override
 			public String getFormattedValue(float value) {
-				Log.d("TESTING", String.valueOf(value));
-
 
 				Date date = new Date(Float.valueOf(value).longValue());
 				return new SimpleDateFormat("MMM dd", Locale.US).format(date);
 			}
 		});
+		xAxis.setGranularityEnabled(true);
+
+		parameterChart.setNoDataText("No Results Added");
+
 	}
 
 	public void setTitle(String title) {
